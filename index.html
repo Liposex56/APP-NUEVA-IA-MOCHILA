@@ -1,0 +1,562 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IA en la Mochila</title>
+  <meta name="description" content="Plataforma educativa sobre inteligencia artificial aplicada a la educacion, con contenidos, catalogo de herramientas y evaluacion interactiva.">
+  <link rel="icon" type="image/png" href="Recursos/Logo IA en la Mochila.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <link rel="stylesheet" href="Style.CSS"/>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="Actions.js" defer></script>
+</head>
+<body>
+  <!-- ==================== VISTA DE INICIO DE SESION ==================== -->
+  <div id="loginView" class="view active">
+    <div class="login-container">
+      <div class="login-box">
+        <div class="logo-login"><img src="Recursos/Logo IA en la Mochila.png" alt="Logo IA en la Mochila"></div>
+        <h2 class="login-title" id="loginTitle">Iniciar sesion</h2>
+        <p class="login-subtitle" id="loginSubtitle">Ingresa tus credenciales para continuar</p>
+
+        <div id="alertContainer"></div>
+
+        <div id="nameGroup" class="form-group hidden">
+          <label class="form-label">Nombre y apellido</label>
+          <div class="input-wrapper">
+            <span class="input-icon">ID</span>
+            <input type="text" id="nameInput" class="form-input" placeholder="Juan Perez">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Correo electronico</label>
+          <div class="input-wrapper">
+            <span class="input-icon">@</span>
+            <input type="email" id="emailInput" class="form-input" placeholder="tu@email.com">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Contrasena</label>
+          <div class="input-wrapper">
+            <span class="input-icon">*</span>
+            <input type="password" id="passwordInput" class="form-input" placeholder="********">
+            <button type="button" class="toggle-password" id="toggleBtn1">Mostrar</button>
+          </div>
+        </div>
+
+        <div id="confirmPasswordGroup" class="form-group hidden">
+          <label class="form-label">Confirmar contrasena</label>
+          <div class="input-wrapper">
+            <span class="input-icon">*</span>
+            <input type="password" id="confirmPasswordInput" class="form-input" placeholder="********">
+            <button type="button" class="toggle-password" id="toggleBtn2">Mostrar</button>
+          </div>
+        </div>
+
+        <button id="submitBtn" class="btn-primary">Iniciar sesion</button>
+
+        <div class="text-center">
+          <button class="link-button" id="toggleFormBtn">
+            <span id="toggleText">No tienes cuenta? Registrate aqui</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== VISTA DEL PANEL PRINCIPAL ==================== -->
+  <div id="dashboardView" class="view">
+    <header class="header">
+      <div class="header-content">
+        <div class="header-left">
+          <div class="header-logo">IA</div>
+          <div>
+            <div style="font-size: 20px; font-weight: bold;">Plataforma Educativa IA</div>
+            <div style="font-size: 12px; color: #bfdbfe;">Sistema de Aprendizaje Inteligente</div>
+          </div>
+        </div>
+        <button class="btn-logout" id="logoutBtn1">
+          <span>Salir</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="welcome-section">
+        <h2 class="welcome-title">Bienvenido(a), <span id="userName"></span></h2>
+        <p style="font-size: 18px; color: #bfdbfe;">Explora contenidos, herramientas y estrategias de inteligencia artificial para educacion.</p>
+      </div>
+
+      <div class="units-grid">
+        <div class="unit-card" data-view="iaEducacionView">
+          <div class="unit-icon">IA</div>
+          <h3 class="unit-title">Que es la IA</h3>
+          <p class="unit-description">Descubre que es la inteligencia artificial y como esta transformando el aprendizaje y la ensenanza.</p>
+        </div>
+
+        <div class="unit-card" data-view="aplicacionesView">
+          <div class="unit-icon">ED</div>
+          <h3 class="unit-title">IA en educacion</h3>
+          <p class="unit-description">Aprende como usar la IA para planear, crear contenido y fortalecer la evaluacion.</p>
+        </div>
+
+        <div class="unit-card" data-view="recursosView">
+          <div class="unit-icon">TI</div>
+          <h3 class="unit-title">Herramientas IA</h3>
+          <p class="unit-description">Explora 23 aplicaciones de IA para potenciar tu experiencia educativa</p>
+        </div>
+
+        <div class="unit-card" data-view="evaluacionView">
+          <div class="unit-icon">EV</div>
+          <h3 class="unit-title">Evaluacion</h3>
+          <p class="unit-description">Pon a prueba tus conocimientos sobre herramientas de IA educativa</p>
+        </div>
+
+        <div class="unit-card" data-view="notebooklmView">
+           <div class="unit-icon">NB</div>
+           <h3 class="unit-title">NotebookLM</h3>
+           <p class="unit-description">La Mano Amiga del Profesor para Entender y Sintetizar Contenido Complejo</p>
+        </div>
+      </div>
+
+      <div class="developers-section">
+      <h2 class="developers-title">Desarrolladores del Proyecto</h2>
+      <div class="developers-grid">
+        <div class="developer-card">
+          <div class="developer-avatar">
+            <img src="Recursos/SHARON.JPG" alt="Sharon Valentina Rodriguez Pena">
+          </div>
+          <h3 class="developer-name">Sharon Valentina Rodriguez Pena</h3>
+          <p class="developer-role">Desarrolladora Web</p>
+          <p class="developer-institution">Universidad Pedagogica y Tecnologica de Colombia</p>
+          <p class="developer-contact">sharon.rodriguez@uptc.edu.co</p>
+        </div>
+
+        <div class="developer-card">
+          <div class="developer-avatar">
+            <img src="Recursos/CRISTIAN.JPG" alt="Cristian Felipe Gomez Iguavita">
+          </div>
+          <h3 class="developer-name">Cristian Felipe Gomez Iguavita</h3>
+          <p class="developer-role">Desarrollador Web</p>
+          <p class="developer-institution">Universidad Pedagogica y Tecnologica de Colombia</p>
+          <p class="developer-contact">cristian.gomez17@uptc.edu.co</p>
+        </div>
+
+        <div class="developer-card">
+          <div class="developer-avatar">
+            <img src="Recursos/Profe.jpg" alt="Profe">
+          </div>
+          <h3 class="developer-name">Yenny Carolina Riano Castellanos</h3>
+          <p class="developer-role">Directora del Proyecto</p>
+          <p class="developer-institution">Universidad Pedagogica y Tecnologica de Colombia</p>
+          <p class="developer-contact">yennycarolina.riano@uptc.edu.co</p>
+        </div>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-brand-header">
+            <img src="Recursos/Logo IA en la Mochila.png" alt="Logo IA en la Mochila" class="footer-brand-logo">
+            <div>
+              <h3>IA en la Mochila</h3>
+              <p>IA Educativa</p>
+            </div>
+          </div>
+          <p class="footer-brand-text">Plataforma educativa innovadora que integra inteligencia artificial para mejorar el aprendizaje y la educacion. Transformando la forma en que estudiantes y docentes interactuan con la tecnologia.</p>
+        </div>
+
+        <div class="footer-logo-card">
+          <img src="Recursos/Logo_de_la_UPTC.svg.png" alt="UPTC" class="footer-logo-image">
+        </div>
+
+        <div class="footer-logo-card">
+          <img src="Recursos/Logo LI.png" alt="Licenciatura en Informatica" class="footer-logo-image">
+        </div>
+
+        <div class="footer-logo-card">
+          <img src="Recursos/logo_FacultadCienciasEducacion.png" alt="Facultad Ciencias de la Educacion" class="footer-logo-image">
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 IA en la Mochila - Proyecto de IA Educativa. Todos los derechos reservados.</p>
+        <p>Desarrollado por el Equipo de Desarrollo</p>
+      </div>
+    </footer>
+    </main>
+  </div>
+       <!-- ==================== VISTA: QUE ES LA IA ==================== -->
+  <div id="iaEducacionView" class="view">
+    <header class="header">
+      <div class="header-content">
+        <button class="btn-back" data-back="dashboardView">Volver</button>
+        <button class="btn-logout" id="logoutBtn2">Salir</button>
+      </div>
+    </header>
+    <div class="content-container">
+      <div class="content-section academic-hero">
+        <span class="section-kicker">Fundamentos</span>
+        <h1 class="section-title">Que es la inteligencia artificial</h1>
+        <p class="section-text">La inteligencia artificial es un campo interdisciplinario que desarrolla sistemas capaces de aprender de datos, reconocer patrones y apoyar decisiones. En educacion, su valor depende del criterio humano y del objetivo pedagogico que orienta su uso.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== VISTA: IA EN EDUCACION ==================== -->
+  <div id="aplicacionesView" class="view">
+    <header class="header">
+      <div class="header-content">
+        <button class="btn-back" data-back="dashboardView">Volver</button>
+        <button class="btn-logout" id="logoutBtn3">Salir</button>
+      </div>
+    </header>
+    <div class="content-container">
+      <div class="content-section academic-hero">
+        <span class="section-kicker">Aplicacion pedagogica</span>
+        <h1 class="section-title">IA en educacion</h1>
+        <p class="section-text">La inteligencia artificial puede apoyar planeacion, produccion de materiales, acompanamiento y evaluacion formativa. Esta vista se completa tambien desde JavaScript para mantener el contenido limpio y sin errores de codificacion.</p>
+      </div>
+    </div>
+  </div>
+  <!-- ==================== VISTA: TABLA PERIÃƒÆ’Ã¢â‚¬Å“DICA DE HERRAMIENTAS ==================== -->
+  <div id="recursosView" class="view">
+    <header class="header">
+      <div class="header-content">
+        <button class="btn-back" data-back="dashboardView">ÃƒÂ¢Ã¢â‚¬Â Ã‚Â Volver</button>
+        <button class="btn-logout" id="logoutBtn4">ÃƒÂ°Ã…Â¸Ã…Â¡Ã‚Âª Salir</button>
+      </div>
+    </header>
+
+    <div class="content-container">
+      <div class="content-section" style="margin-bottom: 24px;"><h1 class="section-title">ðŸ“š Herramientas IA para el estudio y la docencia</h1><p class="section-text">Este catalogo reune herramientas utiles para planear clases, investigar, crear materiales, producir recursos visuales y fortalecer procesos de evaluacion. La idea no es usarlas todas, sino seleccionar las que respondan mejor a una necesidad pedagogica concreta.</p></div>
+
+      <nav class="filters">
+        <button class="filter-btn active" data-filter="all">Todas (<span class="count">23</span>)</button>
+        <button class="filter-btn" data-filter="chat"><span class="cat-dot c-chat"></span>Chat (<span class="count">5</span>)</button>
+        <button class="filter-btn" data-filter="img"><span class="cat-dot c-img"></span>ImÃƒÆ’Ã‚Â¡genes (<span class="count">3</span>)</button>
+        <button class="filter-btn" data-filter="video"><span class="cat-dot c-video"></span>Video (<span class="count">2</span>)</button>
+        <button class="filter-btn" data-filter="audio"><span class="cat-dot c-audio"></span>Audio (<span class="count">2</span>)</button>
+        <button class="filter-btn" data-filter="edu"><span class="cat-dot c-edu"></span>EducaciÃƒÆ’Ã‚Â³n (<span class="count">6</span>)</button>
+        <button class="filter-btn" data-filter="tools"><span class="cat-dot c-tools"></span>Herramientas (<span class="count">5</span>)</button>
+      </nav>
+
+      <section class="periodic" id="tabla">
+        <button class="app" data-cat="chat" data-url="https://chat.openai.com" data-video="hbwGYI0Nuoc" data-name="ChatGPT" data-desc="ChatGPT es un asistente de IA conversacional desarrollado por OpenAI. Puede ayudarte a escribir, resolver problemas, crear contenido educativo, generar ideas y responder preguntas sobre casi cualquier tema.">
+          <div class="logo" style="background:linear-gradient(135deg,#7c3aed,#4c1d95)">GPT</div>
+          <div class="meta">
+            <div class="name">ChatGPT</div>
+            <div class="cat"><span class="cat-dot c-chat"></span>Chat</div>
+          </div>
+        </button>
+
+        <button class="app" data-cat="chat" data-url="https://gemini.google.com" data-video="nqzzI5Pwnxc" data-name="Gemini" data-desc="Gemini es el modelo de IA de Google. Ofrece capacidades avanzadas de conversaciÃƒÆ’Ã‚Â³n, anÃƒÆ’Ã‚Â¡lisis de imÃƒÆ’Ã‚Â¡genes, bÃƒÆ’Ã‚Âºsqueda en tiempo real y puede ayudarte con tareas educativas, investigaciÃƒÆ’Ã‚Â³n y creaciÃƒÆ’Ã‚Â³n de contenido.">
+          <div class="logo" style="background:linear-gradient(135deg,#0ea5a4,#0284c7)">GEM</div>
+          <div class="meta">
+            <div class="name">Gemini</div>
+            <div class="cat"><span class="cat-dot c-chat"></span>Chat</div>
+          </div>
+        </button>
+
+        <button class="app" data-cat="chat tools" data-url="https://copilot.microsoft.com" data-video="zhFDhnTb0Gc" data-name="Copilot" data-desc="Microsoft Copilot es un asistente de IA integrado que combina bÃƒÆ’Ã‚Âºsqueda web, generaciÃƒÆ’Ã‚Â³n de contenido y capacidades de anÃƒÆ’Ã‚Â¡lisis. Ideal para crear documentos, presentaciones y realizar investigaciones.">
+          <div class="logo" style="background:linear-gradient(135deg,#2563eb,#06b6d4)">CP</div>
+          <div class="meta">
+            <div class="name">Copilot</div>
+            <div class="cat"><span class="cat-dot c-chat"></span>Chat</div>
+          </div>
+        </button>
+
+        <button class="app" data-cat="chat" data-url="https://claude.ai" data-name="Claude" data-desc="Claude es un asistente de IA desarrollado por Anthropic. Destaca en anÃƒÆ’Ã‚Â¡lisis de documentos largos, razonamiento complejo, programaciÃƒÆ’Ã‚Â³n y ofrece respuestas detalladas y bien estructuradas.">
+          <div class="logo" style="background:linear-gradient(135deg,#ef4444,#f97316)">CL</div>
+          <div class="meta">
+            <div class="name">Claude</div>
+            <div class="cat"><span class="cat-dot c-chat"></span>Chat</div>
+          </div>
+        </button>
+
+        <button class="app" data-cat="chat" data-url="https://www.perplexity.ai" data-name="Perplexity" data-desc="Perplexity es un motor de bÃƒÆ’Ã‚Âºsqueda impulsado por IA que proporciona respuestas precisas con fuentes verificables. Excelente para investigaciÃƒÆ’Ã‚Â³n acadÃƒÆ’Ã‚Â©mica y obtener informaciÃƒÆ’Ã‚Â³n actualizada con referencias.">
+          <div class="logo" style="background:linear-gradient(135deg,#06b6d4,#0ea5a4)">PX</div>
+          <div class="meta">
+            <div class="name">Perplexity</div>
+            <div class="cat"><span class="cat-dot c-chat"></span>Chat</div>
+          </div>
+        </button>
+
+        <button class="app" data-cat="img" data-url="https://www.canva.com" data-name="Canva IA" data-desc="Canva con IA integrada te permite crear diseÃƒÆ’Ã‚Â±os profesionales, presentaciones, infografÃƒÆ’Ã‚Â­as y materiales educativos con plantillas inteligentes y generaciÃƒÆ’Ã‚Â³n automÃƒÆ’Ã‚Â¡tica de contenido visual.">
+          <div class="logo" style="background:linear-gradient(135deg,#06b6d4,#7c3aed)">CV</div>
+          <div class="meta">
+            <div class="name">Canva IA</div>
+            <div class="cat"><span class="cat-dot c-img"></span>ImÃƒÆ’Ã‚Â¡genes</div>
+          </div>
+        </button>
+
+        <button class="app" data-cat="img" data-url="https://stability.ai" data-name="Stable Diffusion" data-desc="Stable Diffusion es un modelo de IA para generar imÃƒÆ’Ã‚Â¡genes a partir de texto. Perfecto para crear ilustraciones educativas, visualizaciones de conceptos y material grÃƒÆ’Ã‚Â¡fico personalizado.">
+          <div class="logo" style="background:linear-gradient(135deg,#4c1d95,#1e40af)">SD</div>
+          <div class="meta">
+            <div class="name">Stable Diffusion</div>
+            <div class="cat"><span class="cat-dot c-img"></span>ImÃƒÆ’Ã‚Â¡genes</div>
+          </div>
+        </button>
+
+        <button class="app" data-cat="img" data-url="https://openai.com/dall-e" data-name="DALLÃƒâ€šÃ‚Â·E" data-desc="DALLÃƒâ€šÃ‚Â·E de OpenAI genera imÃƒÆ’Ã‚Â¡genes creativas y realistas desde descripciones textuales. ÃƒÆ’Ã…Â¡til para crear recursos visuales ÃƒÆ’Ã‚Âºnicos, ilustraciones de conceptos abstractos y material didÃƒÆ’Ã‚Â¡ctico.">
+          <div class="logo" style="background:linear-gradient(135deg,#0ea5a4,#06b6d4)">DAL</div>
+          <div class="meta">
+            <div class="name">DALLÃƒâ€šÃ‚Â·E</div>
+            <div class="cat"><span class="cat-dot c-img"></span>ImÃƒÆ’Ã‚Â¡genes</div>
+          </div>
+        </button>
+
+        <button class="app" data-cat="tools" data-url="https://designer.microsoft.com" data-name="Designer" data-desc="Microsoft Designer usa IA para crear diseÃƒÆ’Ã‚Â±os grÃƒÆ’Ã‚Â¡ficos profesionales automÃƒÆ’Ã‚Â¡ticamente. Ideal para crear posters educativos, invitaciones a eventos escolares y contenido visual atractivo.">
+          <div class="logo" style="background:linear-gradient(135deg,#0369a1,#7dd3fc)">MD</div>
+          <div class="meta">
+            <div class="name">Designer</div>
+            <div class="cat"><span class="cat-dot c-tools"></span>Herramientas</div>
+          </div>
+        </button>
+
+        <button class="app" data-cat="tools" data-url="https://www.adobe.com/express" data-name="Adobe Express" data-desc="Adobe Express con IA permite crear videos, grÃƒÆ’Ã‚Â¡ficos y pÃƒÆ’Ã‚Â¡ginas web de forma rÃƒÆ’Ã‚Â¡pida. Perfecto para proyectos multimedia educativos, presentaciones visuales y contenido para redes sociales.">
+          <div class="logo" style="background:linear-gradient(135deg,#ef4444,#fb923c)">AE</div>
+          <div class="meta">
+            <div class="name">Adobe Express</div>
+            <div class="cat"><span class="cat-dot c-tools"></span>Herramientas</div>
+          </div>
+        </button>
+
+        <button class="app" data-cat="audio" data-url="https://www.descript.com" data-name="Descript" data-desc="Descript es una herramienta de ediciÃƒÆ’Ã‚Â³n de audio y video que usa IA para transcribir, editar como texto y mejorar la calidad. Ideal para crear podcasts educativos y videos didÃƒÆ’Ã‚Â¡cticos.">
+          <div class="logo" style="background:linear-gradient(135deg,#f472b6,#fb7185)">DS</div>
+          <div class="meta">
+            <div class="name">Descript</div>
+            <div class="cat"><span class="cat-dot c-audio"></span>Audio</div>
+          </div>
+        </button>
+
+        <button class="app" data-cat="audio" data-url="https://elevenlabs.io" data-name="ElevenLabs" data-desc="ElevenLabs genera voces realistas con IA. Puedes crear narraciones para videos educativos, audiolibros, podcasts y contenido accesible en mÃƒÆ’Ã‚Âºltiples idiomas con voces naturales.">
+          <div class="logo" style="background:linear-gradient(135deg,#a78bfa,#7c3aed)">EL</div>
+          <div class="meta">
+            <div class="name">ElevenLabs</div>
+            <div class="cat"><span class="cat-dot c-audio"></span>Audio</div>
+          </div>
+        </button>
+
+        <button class="app" data-cat="video" data-url="https://lumen5.com" data-name="Lumen5" data-desc="Lumen5 convierte texto en videos atractivos automÃƒÆ’Ã‚Â¡ticamente. Perfecto para crear contenido educativo visual, resÃƒÆ’Ã‚Âºmenes de lecciones y material multimedia para presentaciones.">
+          <div class="logo" style="background:linear-gradient(135deg,#16a34a,#34d399)">L5</div>
+          <div class="meta">
+            <div class="name">Lumen5</div>
+            <div class="cat"><span class="cat-dot c-video"></span>Video</div>
+          </div>
+        </button>
+
+        <button class="app" data-cat="video" data-url="https://pictory.ai" data-name="Pictory" data-desc="Pictory crea videos cortos desde artÃƒÆ’Ã‚Â­culos largos o scripts usando IA. ÃƒÆ’Ã…Â¡til para convertir contenido educativo escrito en videos dinÃƒÆ’Ã‚Â¡micos y atractivos para estudiantes.">
+          <div class="logo" style="background:linear-gradient(135deg,#10b981,#059669)">PT</div>
+          <div class="meta">
+            <div class="name">Pictory</div>
+            <div class="cat"><span class="cat-dot c-video"></span>Video</div>
+          </div>
+        </button>
+
+        <button class="app" data-cat="edu" data-url="https://www.grammarly.com" data-name="Grammarly" data-desc="Grammarly es un asistente de escritura con IA que corrige gramÃƒÆ’Ã‚Â¡tica, ortografÃƒÆ’Ã‚Â­a y estilo. Ayuda a estudiantes y profesores a mejorar la calidad de sus textos acadÃƒÆ’Ã‚Â©micos y comunicaciones.">
+          <div class="logo" style="background:linear-gradient(135deg,#0ea5a4,#06b6d4)">GM</div>
+          <div class="meta">
+            <div class="name">Grammarly</div>
+            <div class="cat"><span class="cat-dot c-edu"></span>EducaciÃƒÆ’Ã‚Â³n</div>
+          </div>
+        </button>
+
+        <button class="app" data-cat="edu" data-url="https://quillbot.com" data-name="QuillBot" data-desc="QuillBot parafrasea y mejora textos usando IA. Excelente para reformular ideas, mejorar la redacciÃƒÆ’Ã‚Â³n acadÃƒÆ’Ã‚Â©mica, resumir textos y verificar gramÃƒÆ’Ã‚Â¡tica en diferentes estilos de escritura.">
+          <div class="logo" style="background:linear-gradient(135deg,#f97316,#fb923c)">QB</div>
+          <div class="meta">
+            <div class="name">QuillBot</div>
+            <div class="cat"><span class="cat-dot c-edu"></span>EducaciÃƒÆ’Ã‚Â³n</div>
+          </div>
+        </button>
+
+        <button class="app" data-cat="edu" data-url="https://kahoot.com" data-name="Kahoot!" data-desc="Kahoot! es una plataforma de aprendizaje basada en juegos que ahora integra IA para crear cuestionarios interactivos. Hace que el aprendizaje sea divertido y participativo para todas las edades.">
+          <div class="logo" style="background:linear-gradient(135deg,#7c3aed,#06b6d4)">KH</div>
+          <div class="meta">
+            <div class="name">Kahoot!</div>
+            <div class="cat"><span class="cat-dot c-edu"></span>EducaciÃƒÆ’Ã‚Â³n</div>
+          </div>
+        </button>
+
+        <button class="app" data-cat="edu" data-url="https://socratic.org" data-name="Socratic" data-desc="Socratic de Google usa IA para ayudar a estudiantes a entender sus tareas. Escanea preguntas y proporciona explicaciones paso a paso en matemÃƒÆ’Ã‚Â¡ticas, ciencias, literatura y mÃƒÆ’Ã‚Â¡s.">
+          <div class="logo" style="background:linear-gradient(135deg,#06b6d4,#0ea5a4)">SC</div>
+          <div class="meta">
+            <div class="name">Socratic</div>
+            <div class="cat"><span class="cat-dot c-edu"></span>EducaciÃƒÆ’Ã‚Â³n</div>
+          </div>
+        </button>
+
+        <button class="app" data-cat="tools" data-url="https://www.slidesai.io" data-name="SlidesAI" data-desc="SlidesAI genera presentaciones profesionales automÃƒÆ’Ã‚Â¡ticamente desde texto. Ahorra tiempo creando slides educativas bien diseÃƒÆ’Ã‚Â±adas con contenido estructurado y visualmente atractivo.">
+          <div class="logo" style="background:linear-gradient(135deg,#3b82f6,#60a5fa)">SA</div>
+          <div class="meta">
+            <div class="name">SlidesAI</div>
+            <div class="cat"><span class="cat-dot c-tools"></span>Herramientas</div>
+          </div>
+        </button>
+
+        <button class="app" data-cat="tools" data-url="https://tome.app" data-name="Tome" data-desc="Tome usa IA para crear presentaciones narrativas interactivas. Combina texto, imÃƒÆ’Ã‚Â¡genes y diseÃƒÆ’Ã‚Â±o automÃƒÆ’Ã‚Â¡tico para contar historias educativas de forma atractiva y memorable.">
+          <div class="logo" style="background:linear-gradient(135deg,#a78bfa,#06b6d4)">TO</div>
+          <div class="meta">
+            <div class="name">Tome</div>
+            <div class="cat"><span class="cat-dot c-tools"></span>Herramientas</div>
+          </div>
+        </button>
+
+        <button class="app" data-cat="edu" data-url="https://www.gradescope.com" data-video="bNzIhOV6pQk" data-name="Gradescope" data-desc="Gradescope simplifica la calificaciÃƒÆ’Ã‚Â³n y evaluaciÃƒÆ’Ã‚Â³n con IA. Permite calificar exÃƒÆ’Ã‚Â¡menes de forma mÃƒÆ’Ã‚Â¡s rÃƒÆ’Ã‚Â¡pida, proporcionar retroalimentaciÃƒÆ’Ã‚Â³n consistente y analizar el rendimiento estudiantil automÃƒÆ’Ã‚Â¡ticamente.">
+          <div class="logo" style="background:linear-gradient(135deg,#16a34a,#0ea5a4)">GS</div>
+          <div class="meta">
+            <div class="name">Gradescope</div>
+            <div class="cat"><span class="cat-dot c-edu"></span>EducaciÃƒÆ’Ã‚Â³n</div>
+          </div>
+        </button>
+
+        <button class="app" data-cat="edu" data-url="https://www.formative.com" data-video="zU3vOTrfzYA" data-name="Formative" data-desc="Formative permite crear evaluaciones formativas en tiempo real con IA. Los profesores pueden monitorear el progreso estudiantil instantÃƒÆ’Ã‚Â¡neamente y adaptar la enseÃƒÆ’Ã‚Â±anza segÃƒÆ’Ã‚Âºn las necesidades detectadas.">
+          <div class="logo" style="background:linear-gradient(135deg,#f59e0b,#f97316)">FM</div>
+          <div class="meta">
+            <div class="name">Formative</div>
+            <div class="cat"><span class="cat-dot c-edu"></span>EducaciÃƒÆ’Ã‚Â³n</div>
+          </div>
+        </button>
+
+        <button class="app" data-cat="edu" data-url="https://www.magicschool.ai" data-name="Magic School AI" data-desc="Magic School AI ofrece mÃƒÆ’Ã‚Â¡s de 60 herramientas de IA especÃƒÆ’Ã‚Â­ficas para educadores. Desde crear planes de clase hasta generar rÃƒÆ’Ã‚Âºbricas, actividades y comunicaciones con padres de familia.">
+          <div class="logo" style="background:linear-gradient(135deg,#c026d3,#7c3aed)">MS</div>
+          <div class="meta">
+            <div class="name">Magic School AI</div>
+            <div class="cat"><span class="cat-dot c-edu"></span>EducaciÃƒÆ’Ã‚Â³n</div>
+          </div>
+        </button>
+      </section>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL DE VIDEO ==================== -->
+  <div id="videoModal" class="video-modal">
+    <div class="video-modal-content">
+      <div class="video-modal-header">
+        <h2 class="video-modal-title" id="modalTitle">Video Tutorial</h2>
+        <button class="close-modal" id="closeModal">ÃƒÆ’Ã¢â‚¬â€</button>
+      </div>
+      <div class="modal-video-container" id="videoContainer" style="display:none;">
+        <iframe id="modalVideo" src="" allowfullscreen></iframe>
+      </div>
+      <div class="video-description" id="modalDescription"></div>
+      <div class="modal-button-container">
+        <a id="visitSiteBtn" href="#" target="_blank" class="visit-site-btn">
+          ÃƒÂ°Ã…Â¸Ã…â€™Ã‚Â Visitar Sitio Web
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== VISTA: NOTEBOOKLM ==================== -->
+  <div id="notebooklmView" class="view">
+    <header class="header">
+      <div class="header-content">
+        <button class="btn-back" data-back="dashboardView">Volver</button>
+        <button class="btn-logout" id="logoutBtn6">Salir</button>
+      </div>
+    </header>
+    <div class="content-container">
+      <div class="content-section academic-hero">
+        <span class="section-kicker">Investigacion asistida</span>
+        <h1 class="section-title">NotebookLM</h1>
+        <p class="section-text">NotebookLM es una herramienta util para comprender, sintetizar y organizar documentos propios. En esta plataforma se usa como apoyo para transformar fuentes extensas en ideas clave, comparaciones y rutas de estudio.</p>
+      </div>
+      <div class="content-section">
+        <h2 class="section-subtitle">Usos recomendados</h2>
+        <div class="academic-list">
+          <div class="academic-item">
+            <h3>Resumir documentos</h3>
+            <p>Extrae ideas centrales de textos academicos y materiales de clase.</p>
+          </div>
+          <div class="academic-item">
+            <h3>Preparar explicaciones</h3>
+            <p>Ayuda a convertir fuentes complejas en versiones mas claras para estudiantes.</p>
+          </div>
+          <div class="academic-item">
+            <h3>Comparar fuentes</h3>
+            <p>Permite encontrar coincidencias, diferencias y conceptos clave entre documentos.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== VISTA: EVALUACION ==================== -->
+  <div id="evaluacionView" class="view">
+    <header class="header">
+      <div class="header-content">
+        <button class="btn-back" data-back="dashboardView">Volver</button>
+        <button class="btn-logout" id="logoutBtn5">Salir</button>
+      </div>
+    </header>
+
+    <div class="content-container">
+      <div class="content-section academic-hero">
+        <span class="section-kicker">Verificacion de aprendizaje</span>
+        <h1 class="section-title">Evaluacion: Herramientas de IA Educativa</h1>
+        <p class="section-text">Responde todas las preguntas y verifica tu resultado al final. Si alcanzas el puntaje minimo, podras descargar un certificado con mejor presentacion visual.</p>
+      </div>
+
+      <div class="quiz-container" id="quizContainer"></div>
+
+      <button id="submitQuizBtn" class="submit-quiz-btn">Verificar evaluacion</button>
+    </div>
+  </div>
+
+  <!-- ==================== VISTA: RESULTADOS ==================== -->
+  <div id="resultsView" class="view">
+    <header class="header">
+      <div class="header-content">
+        <div class="header-left">
+          <div class="header-logo">IA</div>
+          <div>
+            <div style="font-size: 20px; font-weight: bold;">Resultados de evaluacion</div>
+            <div style="font-size: 12px; color: #bfdbfe;" id="userNameHeaderResults"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="content-container">
+      <div class="results-container">
+        <h2 class="results-title">Resultados de tu evaluacion</h2>
+        <div class="score-display" id="scoreDisplay">0%</div>
+        <p class="section-text" id="resultMessage"></p>
+
+        <div class="chart-container">
+          <canvas id="resultsChart"></canvas>
+        </div>
+
+        <div id="certificateSection" class="hidden">
+          <p class="section-text" style="color: #22c55e; font-size: 18px; margin: 20px 0;">
+            Has aprobado la evaluacion
+          </p>
+          <button id="downloadCertificateBtn" class="download-certificate-btn">
+            Descargar certificado
+          </button>
+        </div>
+
+        <button id="resetQuizBtn" class="reset-quiz-btn">Reiniciar evaluacion</button>
+      </div>
+
+      <div id="detailedResults" class="quiz-container"></div>
+    </div>
+  </div>
+
+  <canvas id="certificateCanvas" width="1200" height="850"></canvas>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+</body>
+</html>
+
+
+
