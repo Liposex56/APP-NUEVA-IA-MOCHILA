@@ -74,16 +74,39 @@
   <div id="dashboardView" class="view">
     <header class="header">
       <div class="header-content">
-        <div class="header-left">
+        <div class="header-brand">
           <div class="header-logo">IA</div>
-          <div>
-            <div style="font-size: 20px; font-weight: bold;">Plataforma Educativa IA</div>
-            <div style="font-size: 12px; color: #bfdbfe;">Sistema de Aprendizaje Inteligente</div>
+          <div class="header-brand-copy">
+            <div class="header-brand-title">IA en la Mochila</div>
+            <div class="header-brand-subtitle">Plataforma academica UPTC</div>
           </div>
         </div>
-        <button class="btn-logout" id="logoutBtn1">
-          <span>Salir</span>
-        </button>
+        <nav class="top-nav" aria-label="Navegacion principal">
+          <button class="top-nav-link active" data-dashboard-nav="inicio">Pagina principal</button>
+          <button class="top-nav-link" data-dashboard-view="iaEducacionView">Contenidos</button>
+          <button class="top-nav-link" data-dashboard-view="recursosView">Herramientas IA</button>
+          <button class="top-nav-link" data-dashboard-view="evaluacionView">Evaluacion</button>
+          <button class="top-nav-link" data-dashboard-nav="desarrolladores">Equipo</button>
+        </nav>
+        <div class="profile-menu">
+          <button id="profileMenuBtn" class="profile-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="profileDropdown">
+            <span class="profile-trigger-icons" aria-hidden="true">Perfil</span>
+            <span class="profile-initials" id="profileInitials">IA</span>
+          </button>
+          <div id="profileDropdown" class="profile-dropdown hidden" role="menu" aria-label="Menu de perfil">
+            <div class="profile-summary">
+              <div class="profile-summary-avatar" id="profileSummaryAvatar">IA</div>
+              <div>
+                <p class="profile-summary-name" id="profileSummaryName">Usuario</p>
+                <p class="profile-summary-email" id="profileSummaryEmail">correo@institucion.edu.co</p>
+              </div>
+            </div>
+            <button class="profile-dropdown-link" data-dashboard-nav="perfil" role="menuitem">Perfil</button>
+            <button class="profile-dropdown-link" data-dashboard-nav="inicio" role="menuitem">Pagina principal</button>
+            <button class="profile-dropdown-link" data-dashboard-view="recursosView" role="menuitem">Herramientas IA</button>
+            <button class="profile-dropdown-link profile-logout-link" id="logoutBtn1" role="menuitem">Cerrar sesion</button>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -92,6 +115,34 @@
         <h2 class="welcome-title">Bienvenido(a), <span id="userName"></span></h2>
         <p style="font-size: 18px; color: #bfdbfe;">Explora contenidos, herramientas y estrategias de inteligencia artificial para educacion.</p>
       </div>
+
+      <section id="profilePanel" class="profile-panel hidden" aria-labelledby="profilePanelTitle">
+        <div class="profile-panel-header">
+          <div class="profile-panel-avatar" id="profilePanelAvatar">IA</div>
+          <div>
+            <p class="section-kicker">Area personal</p>
+            <h2 class="section-title" id="profilePanelTitle">Perfil academico</h2>
+          </div>
+        </div>
+        <div class="profile-panel-grid">
+          <article class="profile-card">
+            <span class="profile-card-label">Nombre completo</span>
+            <strong id="profilePanelName">Usuario</strong>
+          </article>
+          <article class="profile-card">
+            <span class="profile-card-label">Correo institucional</span>
+            <strong id="profilePanelEmail">correo@institucion.edu.co</strong>
+          </article>
+          <article class="profile-card">
+            <span class="profile-card-label">Rol en plataforma</span>
+            <strong>Participante</strong>
+          </article>
+          <article class="profile-card">
+            <span class="profile-card-label">Acceso</span>
+            <strong>Contenidos, evaluacion y certificado</strong>
+          </article>
+        </div>
+      </section>
 
       <div class="units-grid">
         <div class="unit-card" data-view="iaEducacionView">
@@ -436,24 +487,24 @@
     </div>
   </div>
 
-<!-- ==================== MODAL DE VIDEO ==================== -->
-<div id="videoModal" class="video-modal">
-  <div class="video-modal-content">
-    <div class="video-modal-header">
-      <h2 class="video-modal-title" id="modalTitle">Video Tutorial</h2>
-      <button class="close-modal" id="closeModal" aria-label="Cerrar modal">X</button>
-    </div>
-    <div class="modal-video-container" id="videoContainer" style="display:none;">
-      <iframe id="modalVideo" src="" allowfullscreen></iframe>
-    </div>
-    <div class="video-description" id="modalDescription"></div>
-    <div class="modal-button-container">
-      <a id="visitSiteBtn" href="#" target="_blank" class="visit-site-btn">
-        Visitar sitio web
-      </a>
+  <!-- ==================== MODAL DE VIDEO ==================== -->
+  <div id="videoModal" class="video-modal">
+    <div class="video-modal-content">
+      <div class="video-modal-header">
+        <h2 class="video-modal-title" id="modalTitle">Video Tutorial</h2>
+        <button class="close-modal" id="closeModal" aria-label="Cerrar modal">X</button>
+      </div>
+      <div class="modal-video-container" id="videoContainer" style="display:none;">
+        <iframe id="modalVideo" src="" allowfullscreen></iframe>
+      </div>
+      <div class="video-description" id="modalDescription"></div>
+      <div class="modal-button-container">
+        <a id="visitSiteBtn" href="#" target="_blank" class="visit-site-btn">
+          Visitar sitio web
+        </a>
+      </div>
     </div>
   </div>
-</div>
 
   <!-- ==================== VISTA: NOTEBOOKLM ==================== -->
   <div id="notebooklmView" class="view">
@@ -539,9 +590,17 @@
           <p class="section-text" style="color: #22c55e; font-size: 18px; margin: 20px 0;">
             Has aprobado la evaluacion
           </p>
-          <button id="downloadCertificateBtn" class="download-certificate-btn">
-            Descargar certificado
-          </button>
+          <div class="certificate-actions">
+            <button id="previewCertificateBtn" class="download-certificate-btn secondary-certificate-btn">
+              Ver certificado
+            </button>
+            <button id="downloadCertificateBtn" class="download-certificate-btn">
+              Descargar PDF
+            </button>
+            <button id="emailCertificateBtn" class="download-certificate-btn secondary-certificate-btn">
+              Enviar al correo institucional
+            </button>
+          </div>
         </div>
 
         <button id="resetQuizBtn" class="reset-quiz-btn">Reiniciar evaluacion</button>
@@ -553,7 +612,18 @@
 
   <canvas id="certificateCanvas" width="1200" height="850"></canvas>
 
+  <div id="certificatePreviewModal" class="video-modal">
+    <div class="video-modal-content certificate-preview-content">
+      <div class="video-modal-header">
+        <h2 class="video-modal-title">Vista previa del certificado</h2>
+        <button class="close-modal" id="closeCertificatePreviewBtn" aria-label="Cerrar vista previa">X</button>
+      </div>
+      <iframe id="certificatePreviewFrame" class="certificate-preview-frame" title="Vista previa del certificado"></iframe>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
 </body>
 </html>

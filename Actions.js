@@ -94,6 +94,18 @@
     elements.backButtons = document.querySelectorAll(".btn-back");
     elements.logoutButtons = document.querySelectorAll('[id^="logoutBtn"]');
     elements.userName = document.getElementById("userName");
+    elements.profileMenuBtn = document.getElementById("profileMenuBtn");
+    elements.profileDropdown = document.getElementById("profileDropdown");
+    elements.profileInitials = document.getElementById("profileInitials");
+    elements.profileSummaryAvatar = document.getElementById("profileSummaryAvatar");
+    elements.profileSummaryName = document.getElementById("profileSummaryName");
+    elements.profileSummaryEmail = document.getElementById("profileSummaryEmail");
+    elements.profilePanel = document.getElementById("profilePanel");
+    elements.profilePanelAvatar = document.getElementById("profilePanelAvatar");
+    elements.profilePanelName = document.getElementById("profilePanelName");
+    elements.profilePanelEmail = document.getElementById("profilePanelEmail");
+    elements.dashboardNavLinks = document.querySelectorAll(".top-nav-link");
+    elements.profileDropdownLinks = document.querySelectorAll(".profile-dropdown-link");
     elements.emailInput = document.getElementById("emailInput");
     elements.passwordInput = document.getElementById("passwordInput");
     elements.confirmPasswordInput = document.getElementById("confirmPasswordInput");
@@ -127,8 +139,13 @@
     elements.certificateSection = document.getElementById("certificateSection");
     elements.resultsChart = document.getElementById("resultsChart");
     elements.detailedResults = document.getElementById("detailedResults");
+    elements.previewCertificateBtn = document.getElementById("previewCertificateBtn");
     elements.downloadCertificateBtn = document.getElementById("downloadCertificateBtn");
+    elements.emailCertificateBtn = document.getElementById("emailCertificateBtn");
     elements.certificateCanvas = document.getElementById("certificateCanvas");
+    elements.certificatePreviewModal = document.getElementById("certificatePreviewModal");
+    elements.certificatePreviewFrame = document.getElementById("certificatePreviewFrame");
+    elements.closeCertificatePreviewBtn = document.getElementById("closeCertificatePreviewBtn");
   }
 
   function applyStaticCopy() {
@@ -180,6 +197,17 @@
     elements.unitCards.forEach((card) => card.addEventListener("click", () => card.dataset.view === "evaluacionView" ? captureUserDataForEvaluation() : showView(card.dataset.view)));
     elements.backButtons.forEach((button) => button.addEventListener("click", () => showView(button.dataset.back)));
     elements.logoutButtons.forEach((button) => button.addEventListener("click", handleLogout));
+    elements.dashboardNavLinks.forEach((button) => button.addEventListener("click", () => handleDashboardNavigation(button)));
+    elements.profileDropdownLinks.forEach((button) => button.addEventListener("click", () => handleDashboardNavigation(button)));
+    elements.profileMenuBtn?.addEventListener("click", toggleProfileMenu);
+    document.addEventListener("click", (event) => {
+      if (!elements.profileMenuBtn || !elements.profileDropdown) return;
+      if (elements.profileMenuBtn.contains(event.target) || elements.profileDropdown.contains(event.target)) return;
+      closeProfileMenu();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeProfileMenu();
+    });
   }
 
   function bindCatalogEvents() {
@@ -216,7 +244,36 @@
     });
   }
 
-  function bindCertificateEvents() { elements.downloadCertificateBtn?.addEventListener("click", generateCertificate); }
+  function bindCertificateEvents() {
+    elements.previewCertificateBtn?.addEventListener("click", async () => {
+      try {
+        const pdfUrl = await generateCertificatePdfUrl();
+        if (elements.certificatePreviewFrame) elements.certificatePreviewFrame.src = pdfUrl;
+        elements.certificatePreviewModal?.classList.add("active");
+      } catch (error) {
+        showAlert(error.message || "No fue posible generar la vista previa del certificado.", "error");
+      }
+    });
+    elements.downloadCertificateBtn?.addEventListener("click", async () => {
+      try {
+        const pdf = await buildCertificatePdf();
+        pdf.save(`Certificado_${state.evaluationUserData.name.replace(/\s+/g, "_")}.pdf`);
+      } catch (error) {
+        showAlert(error.message || "No fue posible descargar el certificado en PDF.", "error");
+      }
+    });
+    elements.emailCertificateBtn?.addEventListener("click", async () => {
+      try {
+        await shareCertificateByEmail();
+      } catch (error) {
+        showAlert(error.message || "No fue posible preparar el envio del certificado.", "error");
+      }
+    });
+    elements.closeCertificatePreviewBtn?.addEventListener("click", closeCertificatePreview);
+    elements.certificatePreviewModal?.addEventListener("click", (event) => {
+      if (event.target === elements.certificatePreviewModal) closeCertificatePreview();
+    });
+  }
 
   function toggleAuthMode() {
     state.isLoginMode = !state.isLoginMode;
@@ -306,7 +363,24 @@
       clearAlert();
     }
   }
-  function showDashboard() { elements.views.forEach((view) => view.classList.remove("active")); elements.dashboardView?.classList.add("active"); setText(elements.userName, state.currentUser?.name || "Invitado"); }
+  function showDashboard(options = {}) {
+    elements.views.forEach((view) => view.classList.remove("active"));
+    elements.dashboardView?.classList.add("active");
+    const currentName = state.currentUser?.name || "Invitado";
+    const currentEmail = state.currentUser?.email || "correo@institucion.edu.co";
+    const initials = getUserInitials(currentName);
+    setText(elements.userName, currentName);
+    setText(elements.profileInitials, initials);
+    setText(elements.profileSummaryAvatar, initials);
+    setText(elements.profileSummaryName, currentName);
+    setText(elements.profileSummaryEmail, currentEmail);
+    setText(elements.profilePanelAvatar, initials);
+    setText(elements.profilePanelName, currentName);
+    setText(elements.profilePanelEmail, currentEmail);
+    if (!options.keepNavState) activateDashboardNav("inicio");
+    if (!options.showProfilePanel) hideProfilePanel();
+    closeProfileMenu();
+  }
   function showView(viewId) { elements.views.forEach((view) => view.classList.remove("active")); document.getElementById(viewId)?.classList.add("active"); window.scrollTo({ top: 0, behavior: "smooth" }); }
   function showAlert(message, type) { if (elements.alertContainer) elements.alertContainer.innerHTML = `<div class="alert alert-${type}">${message}</div>`; }
   function clearAlert() { if (elements.alertContainer) elements.alertContainer.innerHTML = ""; }
@@ -421,73 +495,168 @@
     });
   }
 
-  function generateCertificate() {
-    if (!elements.certificateCanvas) return;
+  async function drawCertificateOnCanvas() {
+    if (!elements.certificateCanvas) throw new Error("No se encontro el lienzo del certificado.");
     const canvas = elements.certificateCanvas;
     const ctx = canvas.getContext("2d");
     const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    gradient.addColorStop(0, "#0f1f3a");
-    gradient.addColorStop(0.5, "#163764");
-    gradient.addColorStop(1, "#0f1f3a");
+    gradient.addColorStop(0, "#0b1f3b");
+    gradient.addColorStop(0.55, "#153a6b");
+    gradient.addColorStop(1, "#0c203d");
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.strokeStyle = "#d9b75f";
-    ctx.lineWidth = 20;
-    ctx.strokeRect(40, 40, canvas.width - 80, canvas.height - 80);
-    ctx.strokeStyle = "#f1ddb0";
-    ctx.lineWidth = 5;
-    ctx.strokeRect(60, 60, canvas.width - 120, canvas.height - 120);
+    ctx.fillStyle = "rgba(255,255,255,0.04)";
+    ctx.fillRect(70, 70, canvas.width - 140, canvas.height - 140);
+    ctx.strokeStyle = "#d4af37";
+    ctx.lineWidth = 18;
+    ctx.strokeRect(36, 36, canvas.width - 72, canvas.height - 72);
+    ctx.strokeStyle = "#efe2aa";
+    ctx.lineWidth = 4;
+    ctx.strokeRect(58, 58, canvas.width - 116, canvas.height - 116);
+
+    const [logoIAMochila, logoUptc, logoLic, logoFac] = await Promise.all([
+      loadImage("Recursos/Logo IA en la Mochila.png"),
+      loadImage("Recursos/Logo_de_la_UPTC.svg.png"),
+      loadImage("Recursos/Logo LI.png"),
+      loadImage("Recursos/logo_FacultadCienciasEducacion.png")
+    ]);
+
+    drawLogoCard(ctx, logoUptc, 110, 82, 185, 88);
+    drawLogoCard(ctx, logoLic, 315, 82, 180, 88);
+    drawLogoCard(ctx, logoFac, 705, 82, 215, 88);
+    drawLogoCard(ctx, logoIAMochila, 945, 82, 145, 88);
+
     ctx.textAlign = "center";
     ctx.fillStyle = "#f1ddb0";
-    ctx.font = "700 26px sans-serif";
-    ctx.fillText("PLATAFORMA ACADEMICA", canvas.width / 2, 120);
-    ctx.font = "bold 58px serif";
-    ctx.fillText("CERTIFICADO DE FINALIZACION", canvas.width / 2, 185);
+    ctx.font = "700 24px serif";
+    ctx.fillText("UNIVERSIDAD PEDAGOGICA Y TECNOLOGICA DE COLOMBIA", canvas.width / 2, 220);
+    ctx.font = "700 21px serif";
+    ctx.fillStyle = "#d8e5ff";
+    ctx.fillText("Facultad de Ciencias de la Educacion | Licenciatura en Informatica", canvas.width / 2, 255);
+    ctx.fillStyle = "#f1ddb0";
+    ctx.font = "bold 60px serif";
+    ctx.fillText("CERTIFICADO DE PARTICIPACION", canvas.width / 2, 330);
     ctx.fillStyle = "#ffffff";
     ctx.font = "28px sans-serif";
-    ctx.fillText("Se certifica que", canvas.width / 2, 255);
+    ctx.fillText("Se certifica que", canvas.width / 2, 395);
     ctx.fillStyle = "#f6e7b0";
     ctx.font = "bold 50px serif";
-    ctx.fillText(state.evaluationUserData.name.toUpperCase(), canvas.width / 2, 335);
+    ctx.fillText(state.evaluationUserData.name.toUpperCase(), canvas.width / 2, 470);
     ctx.strokeStyle = "#d9b75f";
     ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.moveTo(255, 355);
-    ctx.lineTo(945, 355);
+    ctx.moveTo(220, 492);
+    ctx.lineTo(980, 492);
     ctx.stroke();
     ctx.fillStyle = "#ffffff";
-    ctx.font = "26px sans-serif";
-    ctx.fillText("aprobo satisfactoriamente la evaluacion del modulo", canvas.width / 2, 425);
+    ctx.font = "25px sans-serif";
+    ctx.fillText("aprobo satisfactoriamente la evaluacion del modulo", canvas.width / 2, 560);
     ctx.fillStyle = "#c9d9f7";
-    ctx.font = "bold 34px sans-serif";
-    ctx.fillText("Herramientas de Inteligencia Artificial", canvas.width / 2, 480);
-    ctx.fillText("para la Educacion", canvas.width / 2, 522);
+    ctx.font = "bold 35px sans-serif";
+    ctx.fillText("Herramientas de Inteligencia Artificial", canvas.width / 2, 612);
+    ctx.fillText("para la Educacion", canvas.width / 2, 652);
     ctx.fillStyle = "#e0e7ff";
-    ctx.font = "24px sans-serif";
-    ctx.fillText(`Institucion: ${state.evaluationUserData.institution}`, canvas.width / 2, 590);
-    ctx.fillText(`Correo: ${state.evaluationUserData.email}`, canvas.width / 2, 628);
+    ctx.font = "22px sans-serif";
+    ctx.fillText(`Institucion: ${state.evaluationUserData.institution}`, canvas.width / 2, 715);
+    ctx.fillText(`Correo institucional: ${state.evaluationUserData.email}`, canvas.width / 2, 750);
     const dateStr = new Date().toLocaleDateString("es-CO", { day: "numeric", month: "long", year: "numeric" });
-    ctx.fillText(`Fecha de emision: ${dateStr}`, canvas.width / 2, 666);
+    ctx.fillText(`Fecha de emision: ${dateStr}`, canvas.width / 2, 785);
     ctx.fillStyle = "#ffffff";
     ctx.font = "italic 20px serif";
-    ctx.fillText("_________________________", 340, 748);
-    ctx.fillText("_________________________", 860, 748);
+    ctx.fillText("_________________________", 325, 808);
+    ctx.fillText("_________________________", 875, 808);
     ctx.font = "bold 18px sans-serif";
-    ctx.fillText("Direccion academica", 340, 780);
-    ctx.fillText("Coordinacion del curso", 860, 780);
+    ctx.fillText("Direccion academica", 325, 838);
+    ctx.fillText("Coordinacion del curso", 875, 838);
     ctx.strokeStyle = "#d9b75f";
     ctx.lineWidth = 4;
     ctx.beginPath();
-    ctx.arc(600, 725, 56, 0, Math.PI * 2);
+    ctx.arc(600, 815, 52, 0, Math.PI * 2);
     ctx.stroke();
     ctx.fillStyle = "#d9b75f";
     ctx.font = "bold 14px sans-serif";
-    ctx.fillText("IA EN LA", 600, 718);
-    ctx.fillText("MOCHILA", 600, 738);
+    ctx.fillText("IA EN LA", 600, 808);
+    ctx.fillText("MOCHILA", 600, 828);
+    return canvas;
+  }
+
+  async function buildCertificatePdf() {
+    const canvas = await drawCertificateOnCanvas();
+    const { jsPDF } = window.jspdf || {};
+    if (!jsPDF) throw new Error("La libreria de PDF no esta disponible.");
+    const pdf = new jsPDF({ orientation: "landscape", unit: "px", format: [canvas.width, canvas.height] });
+    const imageData = canvas.toDataURL("image/png");
+    pdf.addImage(imageData, "PNG", 0, 0, canvas.width, canvas.height);
+    return pdf;
+  }
+
+  async function generateCertificatePdfUrl() {
+    const pdf = await buildCertificatePdf();
+    const blob = pdf.output("blob");
+    return URL.createObjectURL(blob);
+  }
+
+  async function shareCertificateByEmail() {
+    const pdf = await buildCertificatePdf();
+    const blob = pdf.output("blob");
+    const fileName = `Certificado_${state.evaluationUserData.name.replace(/\s+/g, "_")}.pdf`;
+    const pdfFile = new File([blob], fileName, { type: "application/pdf" });
+    if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
+      await navigator.share({
+        title: "Certificado IA en la Mochila",
+        text: `Compartir certificado con ${state.evaluationUserData.email}`,
+        files: [pdfFile]
+      });
+      return;
+    }
+    const subject = encodeURIComponent("Certificado IA en la Mochila");
+    const body = encodeURIComponent(`Adjunta el certificado PDF descargado para ${state.evaluationUserData.name}.`);
+    window.open(`mailto:${state.evaluationUserData.email}?subject=${subject}&body=${body}`, "_blank");
     const link = document.createElement("a");
-    link.download = `Certificado_${state.evaluationUserData.name.replace(/\s+/g, "_")}.png`;
-    link.href = canvas.toDataURL("image/png");
+    link.download = fileName;
+    link.href = URL.createObjectURL(blob);
     link.click();
+    showAlert("Se abrio tu cliente de correo. Adjunta el PDF descargado y envialo al correo institucional.", "success");
+  }
+
+  function closeCertificatePreview() {
+    elements.certificatePreviewModal?.classList.remove("active");
+    if (elements.certificatePreviewFrame?.src) {
+      URL.revokeObjectURL(elements.certificatePreviewFrame.src);
+      elements.certificatePreviewFrame.src = "";
+    }
+  }
+
+  function loadImage(src) {
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      image.crossOrigin = "anonymous";
+      image.onload = () => resolve(image);
+      image.onerror = () => reject(new Error(`No fue posible cargar el recurso ${src}.`));
+      image.src = src;
+    });
+  }
+
+  function drawLogoCard(ctx, image, x, y, width, height) {
+    ctx.fillStyle = "rgba(255,255,255,0.95)";
+    roundRect(ctx, x, y, width, height, 18);
+    ctx.fill();
+    const padding = 12;
+    ctx.drawImage(image, x + padding, y + padding, width - (padding * 2), height - (padding * 2));
+  }
+
+  function roundRect(ctx, x, y, width, height, radius) {
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + width - radius, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+    ctx.lineTo(x + width, y + height - radius);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+    ctx.lineTo(x + radius, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
   }
 
   async function syncSessionFromSupabase() {
@@ -513,4 +682,77 @@
 
   function loadStoredCurrentUser() { try { const raw = localStorage.getItem(STORAGE_KEYS.currentUser); return raw ? JSON.parse(raw) : null; } catch { return null; } }
   function persistCurrentUser() { localStorage.setItem(STORAGE_KEYS.currentUser, JSON.stringify(state.currentUser)); }
+
+  function toggleProfileMenu() {
+    const isHidden = elements.profileDropdown?.classList.contains("hidden");
+    if (isHidden) {
+      elements.profileDropdown?.classList.remove("hidden");
+      elements.profileMenuBtn?.setAttribute("aria-expanded", "true");
+      return;
+    }
+    closeProfileMenu();
+  }
+
+  function closeProfileMenu() {
+    elements.profileDropdown?.classList.add("hidden");
+    elements.profileMenuBtn?.setAttribute("aria-expanded", "false");
+  }
+
+  function handleDashboardNavigation(button) {
+    const navTarget = button.dataset.dashboardNav;
+    const viewTarget = button.dataset.dashboardView;
+    closeProfileMenu();
+    if (navTarget === "inicio") {
+      activateDashboardNav("inicio");
+      hideProfilePanel();
+      showDashboard();
+      return;
+    }
+    if (navTarget === "desarrolladores") {
+      activateDashboardNav("desarrolladores");
+      hideProfilePanel();
+      document.querySelector(".developers-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+    if (navTarget === "perfil") {
+      activateDashboardNav("perfil");
+      showDashboard({ keepNavState: true, showProfilePanel: true });
+      showProfilePanel();
+      return;
+    }
+    if (viewTarget) {
+      activateDashboardNav(viewTarget);
+      hideProfilePanel();
+      if (viewTarget === "evaluacionView") {
+        captureUserDataForEvaluation();
+        return;
+      }
+      showView(viewTarget);
+    }
+  }
+
+  function activateDashboardNav(target) {
+    elements.dashboardNavLinks.forEach((button) => {
+      const isActive = button.dataset.dashboardNav === target || button.dataset.dashboardView === target;
+      button.classList.toggle("active", isActive);
+    });
+  }
+
+  function showProfilePanel() {
+    elements.profilePanel?.classList.remove("hidden");
+    elements.profilePanel?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function hideProfilePanel() {
+    elements.profilePanel?.classList.add("hidden");
+  }
+
+  function getUserInitials(name) {
+    return String(name || "IA")
+      .trim()
+      .split(/\s+/)
+      .slice(0, 2)
+      .map((part) => part.charAt(0).toUpperCase())
+      .join("") || "IA";
+  }
 })();
