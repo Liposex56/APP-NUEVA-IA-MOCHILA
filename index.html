@@ -178,39 +178,61 @@
   </div>
   <div id="profileView" class="view">
     <div class="content-container">
-      <section id="profilePanel" class="profile-panel" aria-labelledby="profilePanelTitle">
-        <div class="profile-panel-header">
-          <div class="profile-panel-avatar" id="profilePanelAvatar">IA</div>
-          <div>
-            <p class="section-kicker">Area personal</p>
-            <h2 class="section-title" id="profilePanelTitle">Perfil academico</h2>
-          </div>
-        </div>
-        <div class="profile-panel-grid">
-          <article class="profile-card">
-            <span class="profile-card-label">Nombre completo</span>
-            <strong id="profilePanelName">Usuario</strong>
-          </article>
-          <article class="profile-card">
-            <span class="profile-card-label">Correo institucional</span>
-            <strong id="profilePanelEmail">correo@institucion.edu.co</strong>
-          </article>
-          <article class="profile-card">
-            <span class="profile-card-label">Rol en plataforma</span>
-            <strong>Participante</strong>
-          </article>
-          <article class="profile-card">
-            <span class="profile-card-label">Acceso</span>
-            <strong>Contenidos, evaluacion y certificado</strong>
-          </article>
-        </div>
-        <div class="profile-upload-block">
+      <section id="profilePanel" class="profile-panel profile-panel-layout" aria-labelledby="profilePanelTitle">
+        <div class="profile-identity-card">
+          <div class="profile-panel-avatar profile-panel-avatar-large" id="profilePanelAvatar">IA</div>
           <label class="profile-card-label" for="profileImageInput">Foto de perfil</label>
-          <div class="profile-upload-row">
-            <div class="profile-upload-preview" id="profileUploadPreview">IA</div>
+          <input type="file" id="profileImageInput" class="profile-image-input" accept="image/*">
+          <p class="profile-upload-help">Carga una imagen cuadrada para personalizar tu perfil en esta sesion.</p>
+          <div class="profile-upload-preview hidden" id="profileUploadPreview">IA</div>
+        </div>
+        <div class="profile-data-layout">
+          <div class="profile-panel-header">
             <div>
-              <input type="file" id="profileImageInput" class="profile-image-input" accept="image/*">
-              <p class="profile-upload-help">Carga una imagen cuadrada para personalizar tu perfil en esta sesion.</p>
+              <p class="section-kicker">Area personal</p>
+              <h2 class="section-title" id="profilePanelTitle">Perfil academico</h2>
+            </div>
+          </div>
+          <div class="profile-data-group">
+            <h3 class="profile-group-title">Informacion del participante</h3>
+            <div class="profile-panel-grid profile-panel-grid-wide">
+              <article class="profile-card">
+                <span class="profile-card-label">Nombre completo</span>
+                <strong id="profilePanelName">Usuario</strong>
+              </article>
+              <article class="profile-card">
+                <span class="profile-card-label">Correo institucional</span>
+                <strong id="profilePanelEmail">correo@institucion.edu.co</strong>
+              </article>
+              <article class="profile-card">
+                <span class="profile-card-label">Estado academico</span>
+                <strong>Matriculado</strong>
+              </article>
+              <article class="profile-card">
+                <span class="profile-card-label">Rol en plataforma</span>
+                <strong>Participante</strong>
+              </article>
+            </div>
+          </div>
+          <div class="profile-data-group">
+            <h3 class="profile-group-title">Datos del programa</h3>
+            <div class="profile-panel-grid profile-panel-grid-wide">
+              <article class="profile-card">
+                <span class="profile-card-label">Programa</span>
+                <strong>Licenciatura en Informatica</strong>
+              </article>
+              <article class="profile-card">
+                <span class="profile-card-label">Institucion</span>
+                <strong id="profilePanelInstitution">Universidad Pedagogica y Tecnologica de Colombia</strong>
+              </article>
+              <article class="profile-card">
+                <span class="profile-card-label">Acceso</span>
+                <strong>Contenidos, evaluacion y certificado</strong>
+              </article>
+              <article class="profile-card">
+                <span class="profile-card-label">Modalidad</span>
+                <strong>Autoformacion guiada</strong>
+              </article>
             </div>
           </div>
         </div>

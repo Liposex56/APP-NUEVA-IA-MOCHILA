@@ -1,5 +1,5 @@
 (() => {
-  const STORAGE_KEYS = { currentUser: "iam_current_user", profileImage: "iam_profile_image", currentView: "iam_current_view", profilePanelOpen: "iam_profile_panel_open" };
+  const STORAGE_KEYS = { currentUser: "iam_current_user", profileImage: "iam_profile_image", currentView: "iam_current_view" };
   const SUPABASE_URL = "https://bxxudrezbaxrmwekeyoe.supabase.co";
   const SUPABASE_KEY = "sb_publishable_SnBuzPXugGRag9uAP4NbpQ_HzPhP6BK";
   const supabaseClient = window.supabase?.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -357,8 +357,7 @@
     } finally {
       state.currentUser = null;
       localStorage.removeItem(STORAGE_KEYS.currentUser);
-      localStorage.removeItem(STORAGE_KEYS.currentView);
-      localStorage.removeItem(STORAGE_KEYS.profilePanelOpen);
+        sessionStorage.removeItem(STORAGE_KEYS.currentView);
       showView("loginView");
       clearInputs();
       clearAlert();
@@ -379,9 +378,9 @@
     setText(elements.profilePanelAvatar, initials);
     setText(elements.profilePanelName, currentName);
     setText(elements.profilePanelEmail, currentEmail);
+    setText(document.getElementById("profilePanelInstitution"), "Universidad Pedagogica y Tecnologica de Colombia");
     renderProfileAvatar(loadStoredProfileImage(), initials);
     if (!options.keepNavState) activateDashboardNav("inicio");
-    if (!options.showProfilePanel) hideProfilePanel();
     if (!options.skipPersistence) persistAppLocation("dashboardView", options.showProfilePanel === true);
     closeProfileMenu();
   }
@@ -391,7 +390,6 @@
     setAppShellVisible(viewId !== "loginView");
     if (viewId !== "loginView") {
       activateDashboardNav(viewId === "dashboardView" ? "inicio" : viewId);
-      hideProfilePanel();
       persistAppLocation(viewId, false);
       closeProfileMenu();
     }
@@ -763,14 +761,8 @@
     });
   }
 
-  function showProfilePanel() {
-    persistAppLocation("profileView", false);
-    elements.profilePanel?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-
-  function hideProfilePanel() {
-    return;
-  }
+  function showProfilePanel() { persistAppLocation("profileView", false); elements.profilePanel?.scrollIntoView({ behavior: "smooth", block: "start" }); }
+  function hideProfilePanel() { return; }
 
   function getUserInitials(name) {
     return String(name || "IA")
@@ -819,21 +811,15 @@
   }
 
   function persistAppLocation(viewId, isProfilePanelOpen = false) {
-    localStorage.setItem(STORAGE_KEYS.currentView, viewId);
-    localStorage.setItem(STORAGE_KEYS.profilePanelOpen, isProfilePanelOpen ? "1" : "0");
+    sessionStorage.setItem(STORAGE_KEYS.currentView, viewId);
   }
 
   function loadStoredCurrentView() {
-    return localStorage.getItem(STORAGE_KEYS.currentView) || "dashboardView";
+    return sessionStorage.getItem(STORAGE_KEYS.currentView) || "dashboardView";
   }
 
   function restoreAppLocation() {
     const savedView = loadStoredCurrentView();
-    const profilePanelOpen = localStorage.getItem(STORAGE_KEYS.profilePanelOpen) === "1";
-    if (profilePanelOpen) {
-      showView("profileView");
-      return;
-    }
     if (savedView === "dashboardView") {
       showDashboard({ skipPersistence: true });
       return;
