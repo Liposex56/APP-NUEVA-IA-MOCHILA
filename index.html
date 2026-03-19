@@ -103,6 +103,11 @@
           </div>
           <button class="profile-dropdown-link" data-app-panel="profile" role="menuitem">Perfil</button>
           <button class="profile-dropdown-link" data-app-view="dashboardView" role="menuitem">Pagina principal</button>
+          <button class="profile-dropdown-link" data-app-view="iaEducacionView" role="menuitem">Que es la IA</button>
+          <button class="profile-dropdown-link" data-app-view="aplicacionesView" role="menuitem">IA en educacion</button>
+          <button class="profile-dropdown-link" data-app-view="recursosView" role="menuitem">Herramientas IA</button>
+          <button class="profile-dropdown-link" data-app-view="evaluacionView" role="menuitem">Evaluacion</button>
+          <button class="profile-dropdown-link" data-app-view="notebooklmView" role="menuitem">NotebookLM</button>
           <button class="profile-dropdown-link" data-app-view="equipoView" role="menuitem">Equipo</button>
           <button class="profile-dropdown-link profile-logout-link" id="logoutBtn1" role="menuitem">Cerrar sesion</button>
         </div>
@@ -117,44 +122,6 @@
         <h2 class="welcome-title">Bienvenido(a), <span id="userName"></span></h2>
         <p style="font-size: 18px; color: #bfdbfe;">Explora contenidos, herramientas y estrategias de inteligencia artificial para educacion.</p>
       </div>
-
-      <section id="profilePanel" class="profile-panel hidden" aria-labelledby="profilePanelTitle">
-        <div class="profile-panel-header">
-          <div class="profile-panel-avatar" id="profilePanelAvatar">IA</div>
-          <div>
-            <p class="section-kicker">Area personal</p>
-            <h2 class="section-title" id="profilePanelTitle">Perfil academico</h2>
-          </div>
-        </div>
-        <div class="profile-panel-grid">
-          <article class="profile-card">
-            <span class="profile-card-label">Nombre completo</span>
-            <strong id="profilePanelName">Usuario</strong>
-          </article>
-          <article class="profile-card">
-            <span class="profile-card-label">Correo institucional</span>
-            <strong id="profilePanelEmail">correo@institucion.edu.co</strong>
-          </article>
-          <article class="profile-card">
-            <span class="profile-card-label">Rol en plataforma</span>
-            <strong>Participante</strong>
-          </article>
-          <article class="profile-card">
-            <span class="profile-card-label">Acceso</span>
-            <strong>Contenidos, evaluacion y certificado</strong>
-          </article>
-        </div>
-        <div class="profile-upload-block">
-          <label class="profile-card-label" for="profileImageInput">Foto de perfil</label>
-          <div class="profile-upload-row">
-            <div class="profile-upload-preview" id="profileUploadPreview">IA</div>
-            <div>
-              <input type="file" id="profileImageInput" class="profile-image-input" accept="image/*">
-              <p class="profile-upload-help">Carga una imagen cuadrada para personalizar tu perfil en esta sesion.</p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       <section class="home-overview">
         <article class="home-highlight-card">
@@ -208,6 +175,47 @@
       </div>
     </footer>
     </main>
+  </div>
+  <div id="profileView" class="view">
+    <div class="content-container">
+      <section id="profilePanel" class="profile-panel" aria-labelledby="profilePanelTitle">
+        <div class="profile-panel-header">
+          <div class="profile-panel-avatar" id="profilePanelAvatar">IA</div>
+          <div>
+            <p class="section-kicker">Area personal</p>
+            <h2 class="section-title" id="profilePanelTitle">Perfil academico</h2>
+          </div>
+        </div>
+        <div class="profile-panel-grid">
+          <article class="profile-card">
+            <span class="profile-card-label">Nombre completo</span>
+            <strong id="profilePanelName">Usuario</strong>
+          </article>
+          <article class="profile-card">
+            <span class="profile-card-label">Correo institucional</span>
+            <strong id="profilePanelEmail">correo@institucion.edu.co</strong>
+          </article>
+          <article class="profile-card">
+            <span class="profile-card-label">Rol en plataforma</span>
+            <strong>Participante</strong>
+          </article>
+          <article class="profile-card">
+            <span class="profile-card-label">Acceso</span>
+            <strong>Contenidos, evaluacion y certificado</strong>
+          </article>
+        </div>
+        <div class="profile-upload-block">
+          <label class="profile-card-label" for="profileImageInput">Foto de perfil</label>
+          <div class="profile-upload-row">
+            <div class="profile-upload-preview" id="profileUploadPreview">IA</div>
+            <div>
+              <input type="file" id="profileImageInput" class="profile-image-input" accept="image/*">
+              <p class="profile-upload-help">Carga una imagen cuadrada para personalizar tu perfil en esta sesion.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
   </div>
   <div id="equipoView" class="view"></div>
        <!-- ==================== VISTA: QUE ES LA IA ==================== -->

@@ -515,19 +515,28 @@
     const canvas = elements.certificateCanvas;
     const ctx = canvas.getContext("2d");
     const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    gradient.addColorStop(0, "#0b1f3b");
-    gradient.addColorStop(0.55, "#153a6b");
-    gradient.addColorStop(1, "#0c203d");
+    gradient.addColorStop(0, "#0a2240");
+    gradient.addColorStop(0.5, "#123d73");
+    gradient.addColorStop(1, "#0b2446");
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "rgba(255,255,255,0.04)";
-    ctx.fillRect(70, 70, canvas.width - 140, canvas.height - 140);
+    ctx.fillStyle = "rgba(255,255,255,0.03)";
+    ctx.fillRect(88, 88, canvas.width - 176, canvas.height - 176);
     ctx.strokeStyle = "#d4af37";
-    ctx.lineWidth = 18;
-    ctx.strokeRect(36, 36, canvas.width - 72, canvas.height - 72);
-    ctx.strokeStyle = "#efe2aa";
-    ctx.lineWidth = 4;
-    ctx.strokeRect(58, 58, canvas.width - 116, canvas.height - 116);
+    ctx.lineWidth = 12;
+    ctx.strokeRect(48, 48, canvas.width - 96, canvas.height - 96);
+    ctx.strokeStyle = "rgba(239, 226, 170, 0.9)";
+    ctx.lineWidth = 2;
+    ctx.strokeRect(68, 68, canvas.width - 136, canvas.height - 136);
+
+    ctx.beginPath();
+    ctx.strokeStyle = "rgba(212, 175, 55, 0.18)";
+    ctx.lineWidth = 1.5;
+    ctx.arc(160, 160, 120, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(canvas.width - 160, canvas.height - 170, 140, 0, Math.PI * 2);
+    ctx.stroke();
 
     const [logoIAMochila, logoUptc, logoLic, logoFac] = await Promise.all([
       loadImage("Recursos/Logo IA en la Mochila.png"),
@@ -536,62 +545,83 @@
       loadImage("Recursos/logo_FacultadCienciasEducacion.png")
     ]);
 
-    drawLogoCard(ctx, logoUptc, 110, 82, 185, 88);
-    drawLogoCard(ctx, logoLic, 315, 82, 180, 88);
-    drawLogoCard(ctx, logoFac, 705, 82, 215, 88);
-    drawLogoCard(ctx, logoIAMochila, 945, 82, 145, 88);
+    drawLogoImage(ctx, logoUptc, 118, 90, 130, 96);
+    drawLogoImage(ctx, logoLic, 268, 98, 180, 74);
+    drawLogoImage(ctx, logoFac, 760, 98, 210, 76);
+    drawLogoImage(ctx, logoIAMochila, 1020, 90, 88, 88);
 
     ctx.textAlign = "center";
-    ctx.fillStyle = "#f1ddb0";
-    ctx.font = "700 24px serif";
-    ctx.fillText("UNIVERSIDAD PEDAGOGICA Y TECNOLOGICA DE COLOMBIA", canvas.width / 2, 220);
-    ctx.font = "700 21px serif";
-    ctx.fillStyle = "#d8e5ff";
-    ctx.fillText("Facultad de Ciencias de la Educacion | Licenciatura en Informatica", canvas.width / 2, 255);
-    ctx.fillStyle = "#f1ddb0";
-    ctx.font = "bold 60px serif";
-    ctx.fillText("CERTIFICADO DE PARTICIPACION", canvas.width / 2, 330);
+    ctx.fillStyle = "#f5d77d";
+    ctx.font = "700 17px serif";
+    ctx.fillText("UNIVERSIDAD PEDAGOGICA Y TECNOLOGICA DE COLOMBIA", canvas.width / 2, 165);
+    ctx.font = "700 15px serif";
+    ctx.fillStyle = "#d9e9ff";
+    ctx.fillText("Facultad de Ciencias de la Educacion | Licenciatura en Informatica", canvas.width / 2, 194);
+
+    ctx.fillStyle = "#f2df9b";
+    ctx.font = "700 20px serif";
+    ctx.fillText("CERTIFICADO", canvas.width / 2, 268);
     ctx.fillStyle = "#ffffff";
-    ctx.font = "28px sans-serif";
-    ctx.fillText("Se certifica que", canvas.width / 2, 395);
-    ctx.fillStyle = "#f6e7b0";
-    ctx.font = "bold 50px serif";
-    ctx.fillText(state.evaluationUserData.name.toUpperCase(), canvas.width / 2, 470);
-    ctx.strokeStyle = "#d9b75f";
-    ctx.lineWidth = 2;
+    ctx.font = "900 54px serif";
+    ctx.fillText("DE PARTICIPACION", canvas.width / 2, 332);
+
+    ctx.fillStyle = "#d9e9ff";
+    ctx.font = "26px sans-serif";
+    ctx.fillText("Se certifica que", canvas.width / 2, 408);
+    ctx.fillStyle = "#f3dd8e";
+    ctx.font = "bold 52px serif";
+    ctx.fillText(state.evaluationUserData.name.toUpperCase(), canvas.width / 2, 492);
+
+    ctx.strokeStyle = "#d4af37";
+    ctx.lineWidth = 1.5;
     ctx.beginPath();
-    ctx.moveTo(220, 492);
-    ctx.lineTo(980, 492);
+    ctx.moveTo(200, 516);
+    ctx.lineTo(1000, 516);
     ctx.stroke();
+
     ctx.fillStyle = "#ffffff";
-    ctx.font = "25px sans-serif";
-    ctx.fillText("aprobo satisfactoriamente la evaluacion del modulo", canvas.width / 2, 560);
-    ctx.fillStyle = "#c9d9f7";
-    ctx.font = "bold 35px sans-serif";
-    ctx.fillText("Herramientas de Inteligencia Artificial", canvas.width / 2, 612);
-    ctx.fillText("para la Educacion", canvas.width / 2, 652);
-    ctx.fillStyle = "#e0e7ff";
-    ctx.font = "22px sans-serif";
-    ctx.fillText(`Institucion: ${state.evaluationUserData.institution}`, canvas.width / 2, 715);
-    ctx.fillText(`Correo institucional: ${state.evaluationUserData.email}`, canvas.width / 2, 750);
+    ctx.font = "24px sans-serif";
+    ctx.fillText("aprobo satisfactoriamente la evaluacion del modulo", canvas.width / 2, 585);
+    ctx.fillStyle = "#d9e9ff";
+    ctx.font = "bold 33px sans-serif";
+    ctx.fillText("Herramientas de Inteligencia Artificial", canvas.width / 2, 640);
+    ctx.fillText("para la Educacion", canvas.width / 2, 682);
+
+    ctx.fillStyle = "rgba(255,255,255,0.08)";
+    roundRect(ctx, 150, 720, 900, 86, 22);
+    ctx.fill();
+
+    ctx.fillStyle = "#f2df9b";
+    ctx.font = "700 15px sans-serif";
+    ctx.fillText("INSTITUCION", 265, 748);
+    ctx.fillText("CORREO INSTITUCIONAL", 600, 748);
+    ctx.fillText("FECHA DE EMISION", 920, 748);
+
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "21px sans-serif";
+    ctx.fillText(state.evaluationUserData.institution, 265, 781);
+    ctx.fillText(state.evaluationUserData.email, 600, 781);
     const dateStr = new Date().toLocaleDateString("es-CO", { day: "numeric", month: "long", year: "numeric" });
-    ctx.fillText(`Fecha de emision: ${dateStr}`, canvas.width / 2, 785);
+    ctx.fillText(dateStr, 920, 781);
+
     ctx.fillStyle = "#ffffff";
-    ctx.font = "italic 20px serif";
-    ctx.fillText("_________________________", 325, 808);
-    ctx.fillText("_________________________", 875, 808);
-    ctx.font = "bold 18px sans-serif";
-    ctx.fillText("Direccion academica", 325, 838);
-    ctx.fillText("Coordinacion del curso", 875, 838);
+    ctx.font = "italic 18px serif";
+    ctx.fillText("_________________________", 310, 874);
+    ctx.fillText("_________________________", 888, 874);
+    ctx.font = "bold 16px sans-serif";
+    ctx.fillStyle = "#d9e9ff";
+    ctx.fillText("Direccion academica", 310, 902);
+    ctx.fillText("Coordinacion del curso", 888, 902);
+
     ctx.strokeStyle = "#d9b75f";
-    ctx.lineWidth = 4;
+    ctx.lineWidth = 3;
     ctx.beginPath();
-    ctx.arc(600, 815, 52, 0, Math.PI * 2);
+    ctx.arc(600, 875, 44, 0, Math.PI * 2);
     ctx.stroke();
-    ctx.fillStyle = "#d9b75f";
-    ctx.font = "bold 14px sans-serif";
-    ctx.fillText("IA EN LA", 600, 808);
-    ctx.fillText("MOCHILA", 600, 828);
+    ctx.fillStyle = "#f2df9b";
+    ctx.font = "bold 12px sans-serif";
+    ctx.fillText("UPTC", 600, 871);
+    ctx.fillText("2026", 600, 888);
     return canvas;
   }
 
@@ -652,12 +682,11 @@
     });
   }
 
-  function drawLogoCard(ctx, image, x, y, width, height) {
-    ctx.fillStyle = "rgba(255,255,255,0.95)";
-    roundRect(ctx, x, y, width, height, 18);
-    ctx.fill();
-    const padding = 12;
-    ctx.drawImage(image, x + padding, y + padding, width - (padding * 2), height - (padding * 2));
+  function drawLogoImage(ctx, image, x, y, width, height) {
+    ctx.save();
+    ctx.globalAlpha = 0.98;
+    ctx.drawImage(image, x, y, width, height);
+    ctx.restore();
   }
 
   function roundRect(ctx, x, y, width, height, radius) {
@@ -718,9 +747,7 @@
     const viewTarget = button.dataset.appView;
     closeProfileMenu();
     if (panelTarget === "profile") {
-      activateDashboardNav("perfil");
-      showDashboard({ keepNavState: true, showProfilePanel: true });
-      showProfilePanel();
+      showView("profileView");
       return;
     }
     if (!viewTarget) return;
@@ -737,15 +764,12 @@
   }
 
   function showProfilePanel() {
-    elements.profilePanel?.classList.remove("hidden");
-    persistAppLocation("dashboardView", true);
+    persistAppLocation("profileView", false);
     elements.profilePanel?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function hideProfilePanel() {
-    elements.profilePanel?.classList.add("hidden");
-    const currentView = loadStoredCurrentView();
-    if (currentView === "dashboardView") persistAppLocation("dashboardView", false);
+    return;
   }
 
   function getUserInitials(name) {
@@ -807,13 +831,15 @@
     const savedView = loadStoredCurrentView();
     const profilePanelOpen = localStorage.getItem(STORAGE_KEYS.profilePanelOpen) === "1";
     if (profilePanelOpen) {
-      activateDashboardNav("perfil");
-      showDashboard({ keepNavState: true, showProfilePanel: true, skipPersistence: true });
-      showProfilePanel();
+      showView("profileView");
       return;
     }
     if (savedView === "dashboardView") {
       showDashboard({ skipPersistence: true });
+      return;
+    }
+    if (savedView === "profileView") {
+      showView("profileView");
       return;
     }
     if (savedView === "evaluacionView") {
