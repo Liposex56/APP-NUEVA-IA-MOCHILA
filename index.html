@@ -70,46 +70,48 @@
     </div>
   </div>
 
-  <!-- ==================== VISTA DEL PANEL PRINCIPAL ==================== -->
-  <div id="dashboardView" class="view">
-    <header class="header">
-      <div class="header-content">
-        <div class="header-brand">
-          <div class="header-logo">IA</div>
-          <div class="header-brand-copy">
-            <div class="header-brand-title">IA en la Mochila</div>
-            <div class="header-brand-subtitle">Plataforma academica UPTC</div>
-          </div>
-        </div>
-        <nav class="top-nav" aria-label="Navegacion principal">
-          <button class="top-nav-link active" data-dashboard-nav="inicio">Pagina principal</button>
-          <button class="top-nav-link" data-dashboard-view="iaEducacionView">Contenidos</button>
-          <button class="top-nav-link" data-dashboard-view="recursosView">Herramientas IA</button>
-          <button class="top-nav-link" data-dashboard-view="evaluacionView">Evaluacion</button>
-          <button class="top-nav-link" data-dashboard-nav="desarrolladores">Equipo</button>
-        </nav>
-        <div class="profile-menu">
-          <button id="profileMenuBtn" class="profile-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="profileDropdown">
-            <span class="profile-trigger-icons" aria-hidden="true">Perfil</span>
-            <span class="profile-initials" id="profileInitials">IA</span>
-          </button>
-          <div id="profileDropdown" class="profile-dropdown hidden" role="menu" aria-label="Menu de perfil">
-            <div class="profile-summary">
-              <div class="profile-summary-avatar" id="profileSummaryAvatar">IA</div>
-              <div>
-                <p class="profile-summary-name" id="profileSummaryName">Usuario</p>
-                <p class="profile-summary-email" id="profileSummaryEmail">correo@institucion.edu.co</p>
-              </div>
-            </div>
-            <button class="profile-dropdown-link" data-dashboard-nav="perfil" role="menuitem">Perfil</button>
-            <button class="profile-dropdown-link" data-dashboard-nav="inicio" role="menuitem">Pagina principal</button>
-            <button class="profile-dropdown-link" data-dashboard-view="recursosView" role="menuitem">Herramientas IA</button>
-            <button class="profile-dropdown-link profile-logout-link" id="logoutBtn1" role="menuitem">Cerrar sesion</button>
-          </div>
+  <header id="appHeader" class="header app-shell-header hidden">
+    <div class="header-content">
+      <div class="header-brand">
+        <div class="header-logo">IA</div>
+        <div class="header-brand-copy">
+          <div class="header-brand-title">IA en la Mochila</div>
+          <div class="header-brand-subtitle">Plataforma academica UPTC</div>
         </div>
       </div>
-    </header>
+      <nav class="top-nav" aria-label="Navegacion principal">
+        <button class="top-nav-link" data-app-view="dashboardView">Pagina principal</button>
+        <button class="top-nav-link" data-app-view="iaEducacionView">Que es la IA</button>
+        <button class="top-nav-link" data-app-view="aplicacionesView">IA en educacion</button>
+        <button class="top-nav-link" data-app-view="recursosView">Herramientas IA</button>
+        <button class="top-nav-link" data-app-view="evaluacionView">Evaluacion</button>
+        <button class="top-nav-link" data-app-view="notebooklmView">NotebookLM</button>
+        <button class="top-nav-link" data-app-view="equipoView">Equipo</button>
+      </nav>
+      <div class="profile-menu">
+        <button id="profileMenuBtn" class="profile-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="profileDropdown">
+          <span class="profile-trigger-icons" aria-hidden="true">Perfil</span>
+          <span class="profile-initials" id="profileInitials">IA</span>
+        </button>
+        <div id="profileDropdown" class="profile-dropdown hidden" role="menu" aria-label="Menu de perfil">
+          <div class="profile-summary">
+            <div class="profile-summary-avatar" id="profileSummaryAvatar">IA</div>
+            <div>
+              <p class="profile-summary-name" id="profileSummaryName">Usuario</p>
+              <p class="profile-summary-email" id="profileSummaryEmail">correo@institucion.edu.co</p>
+            </div>
+          </div>
+          <button class="profile-dropdown-link" data-app-panel="profile" role="menuitem">Perfil</button>
+          <button class="profile-dropdown-link" data-app-view="dashboardView" role="menuitem">Pagina principal</button>
+          <button class="profile-dropdown-link" data-app-view="equipoView" role="menuitem">Equipo</button>
+          <button class="profile-dropdown-link profile-logout-link" id="logoutBtn1" role="menuitem">Cerrar sesion</button>
+        </div>
+      </div>
+    </div>
+  </header>
 
+  <!-- ==================== VISTA DEL PANEL PRINCIPAL ==================== -->
+  <div id="dashboardView" class="view">
     <main class="main-content">
       <div class="welcome-section">
         <h2 class="welcome-title">Bienvenido(a), <span id="userName"></span></h2>
@@ -142,74 +144,37 @@
             <strong>Contenidos, evaluacion y certificado</strong>
           </article>
         </div>
+        <div class="profile-upload-block">
+          <label class="profile-card-label" for="profileImageInput">Foto de perfil</label>
+          <div class="profile-upload-row">
+            <div class="profile-upload-preview" id="profileUploadPreview">IA</div>
+            <div>
+              <input type="file" id="profileImageInput" class="profile-image-input" accept="image/*">
+              <p class="profile-upload-help">Carga una imagen cuadrada para personalizar tu perfil en esta sesion.</p>
+            </div>
+          </div>
+        </div>
       </section>
 
-      <div class="units-grid">
-        <div class="unit-card" data-view="iaEducacionView">
-          <div class="unit-icon">IA</div>
-          <h3 class="unit-title">Que es la IA</h3>
-          <p class="unit-description">Descubre que es la inteligencia artificial y como esta transformando el aprendizaje y la ensenanza.</p>
-        </div>
-
-        <div class="unit-card" data-view="aplicacionesView">
-          <div class="unit-icon">ED</div>
-          <h3 class="unit-title">IA en educacion</h3>
-          <p class="unit-description">Aprende como usar la IA para planear, crear contenido y fortalecer la evaluacion.</p>
-        </div>
-
-        <div class="unit-card" data-view="recursosView">
-          <div class="unit-icon">TI</div>
-          <h3 class="unit-title">Herramientas IA</h3>
-          <p class="unit-description">Explora 23 aplicaciones de IA para potenciar tu experiencia educativa</p>
-        </div>
-
-        <div class="unit-card" data-view="evaluacionView">
-          <div class="unit-icon">EV</div>
-          <h3 class="unit-title">Evaluacion</h3>
-          <p class="unit-description">Pon a prueba tus conocimientos sobre herramientas de IA educativa</p>
-        </div>
-
-        <div class="unit-card" data-view="notebooklmView">
-           <div class="unit-icon">NB</div>
-           <h3 class="unit-title">NotebookLM</h3>
-           <p class="unit-description">La Mano Amiga del Profesor para Entender y Sintetizar Contenido Complejo</p>
-        </div>
-      </div>
-
-      <div class="developers-section">
-      <h2 class="developers-title">Desarrolladores del Proyecto</h2>
-      <div class="developers-grid">
-        <div class="developer-card">
-          <div class="developer-avatar">
-            <img src="Recursos/SHARON.JPG" alt="Sharon Valentina Rodriguez Pena">
-          </div>
-          <h3 class="developer-name">Sharon Valentina Rodriguez Pena</h3>
-          <p class="developer-role">Desarrolladora Web</p>
-          <p class="developer-institution">Universidad Pedagogica y Tecnologica de Colombia</p>
-          <p class="developer-contact">sharon.rodriguez@uptc.edu.co</p>
-        </div>
-
-        <div class="developer-card">
-          <div class="developer-avatar">
-            <img src="Recursos/CRISTIAN.JPG" alt="Cristian Felipe Gomez Iguavita">
-          </div>
-          <h3 class="developer-name">Cristian Felipe Gomez Iguavita</h3>
-          <p class="developer-role">Desarrollador Web</p>
-          <p class="developer-institution">Universidad Pedagogica y Tecnologica de Colombia</p>
-          <p class="developer-contact">cristian.gomez17@uptc.edu.co</p>
-        </div>
-
-        <div class="developer-card">
-          <div class="developer-avatar">
-            <img src="Recursos/Profe.jpg" alt="Profe">
-          </div>
-          <h3 class="developer-name">Yenny Carolina Riano Castellanos</h3>
-          <p class="developer-role">Directora del Proyecto</p>
-          <p class="developer-institution">Universidad Pedagogica y Tecnologica de Colombia</p>
-          <p class="developer-contact">yennycarolina.riano@uptc.edu.co</p>
-        </div>
-      </div>
-    </div>
+      <section class="home-overview">
+        <article class="home-highlight-card">
+          <span class="section-kicker">Presentacion</span>
+          <h3 class="section-title">Explora contenidos introductorios y aplicados</h3>
+          <p class="section-text">La plataforma integra fundamentos de inteligencia artificial, uso pedagogico, herramientas para crear materiales y una evaluacion con certificado final.</p>
+        </article>
+        <article class="home-highlight-card">
+          <span class="section-kicker">Ruta sugerida</span>
+          <ul class="section-list">
+            <li>Comienza en "Que es la IA" para entender conceptos base.</li>
+            <li>Continua con "IA en educacion" para identificar usos responsables.</li>
+            <li>Explora "Herramientas IA" y cierra con la evaluacion.</li>
+          </ul>
+        </article>
+        <article class="home-highlight-card">
+          <span class="section-kicker">Enfoque</span>
+          <p class="section-text">El proyecto esta pensado para estudiantes y docentes que necesitan una guia clara, visual y academica para incorporar IA en procesos reales de aprendizaje.</p>
+        </article>
+      </section>
 
     <footer class="site-footer">
       <div class="footer-grid">
@@ -244,6 +209,7 @@
     </footer>
     </main>
   </div>
+  <div id="equipoView" class="view"></div>
        <!-- ==================== VISTA: QUE ES LA IA ==================== -->
   <div id="iaEducacionView" class="view">
     <header class="header">

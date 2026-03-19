@@ -1,5 +1,5 @@
 (() => {
-  const STORAGE_KEYS = { currentUser: "iam_current_user" };
+  const STORAGE_KEYS = { currentUser: "iam_current_user", profileImage: "iam_profile_image", currentView: "iam_current_view", profilePanelOpen: "iam_profile_panel_open" };
   const SUPABASE_URL = "https://bxxudrezbaxrmwekeyoe.supabase.co";
   const SUPABASE_KEY = "sb_publishable_SnBuzPXugGRag9uAP4NbpQ_HzPhP6BK";
   const supabaseClient = window.supabase?.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -51,6 +51,7 @@
     rebuildViews();
     cacheDom();
     applyStaticCopy();
+    setAppShellVisible(false);
     bindAuthEvents();
     bindNavigationEvents();
     bindCatalogEvents();
@@ -66,7 +67,7 @@
       if (session?.user) {
         state.currentUser = mapSupabaseUser(session.user);
         persistCurrentUser();
-        showDashboard();
+        restoreAppLocation();
       } else {
         state.currentUser = null;
         localStorage.removeItem(STORAGE_KEYS.currentUser);
@@ -80,6 +81,7 @@
     setView("aplicacionesView", `<header class="header"><div class="header-content"><button class="btn-back" data-back="dashboardView">Volver</button><button class="btn-logout" id="logoutBtn3">Salir</button></div></header><div class="content-container"><section class="content-section academic-hero"><span class="section-kicker">Aplicacion pedagogica</span><h1 class="section-title">IA en educacion</h1><p class="section-text">La IA puede fortalecer la planeacion, la produccion de materiales, la atencion a la diversidad y la evaluacion formativa. Su incorporacion debe responder a objetivos de aprendizaje claros y a principios eticos explicitos.</p></section><section class="feature-grid"><article class="feature-card"><div class="feature-icon">A</div><h3 class="feature-title">Planeacion academica</h3><p class="feature-text">Apoya secuencias didacticas, rubricas, actividades y ajustes de nivel.</p></article><article class="feature-card"><div class="feature-icon">B</div><h3 class="feature-title">Produccion de recursos</h3><p class="feature-text">Facilita guias, resumenes, presentaciones y cuestionarios.</p></article><article class="feature-card"><div class="feature-icon">C</div><h3 class="feature-title">Seguimiento formativo</h3><p class="feature-text">Permite detectar errores frecuentes y orientar apoyos pedagogicos.</p></article></section><section class="content-section"><h2 class="section-subtitle">Escenarios de uso</h2><div class="academic-list"><div class="academic-item"><h3>Antes de clase</h3><p>Sirve para organizar contenidos, ajustar niveles y anticipar preguntas frecuentes.</p></div><div class="academic-item"><h3>Durante la clase</h3><p>Ayuda a explicar conceptos, generar ejemplos y proponer actividades dinamicas.</p></div><div class="academic-item"><h3>Despues de la clase</h3><p>Apoya la retroalimentacion, el repaso y la construccion de materiales de profundizacion.</p></div></div></section></div>`);
     setView("recursosView", `<header class="header"><div class="header-content"><button class="btn-back" data-back="dashboardView">Volver</button><button class="btn-logout" id="logoutBtn4">Salir</button></div></header><div class="content-container"><section class="content-section academic-hero"><span class="section-kicker">Seleccion orientada</span><h1 class="section-title">Herramientas IA para estudio y docencia</h1><p class="section-text">Este catalogo reune plataformas utiles para investigar, redactar, crear recursos visuales, producir contenido multimedia y evaluar. El criterio central no es usarlas todas, sino elegir las que respondan mejor a una necesidad pedagogica concreta.</p></section><section class="content-section compact-panel"><div class="tools-overview"><div><h2 class="section-subtitle">Como leer el catalogo</h2><p class="section-text">Filtra por tipo de tarea y compara fortalezas segun el proposito didactico.</p></div><div class="tools-metrics"><div class="metric-card"><span class="metric-number">23</span><span class="metric-label">herramientas curadas</span></div><div class="metric-card"><span class="metric-number" id="appCount">23</span><span class="metric-label">visibles en pantalla</span></div></div></div></section><nav class="filters"><button class="filter-btn active" data-filter="all">Todas</button><button class="filter-btn" data-filter="chat">Asistentes</button><button class="filter-btn" data-filter="img">Imagen</button><button class="filter-btn" data-filter="video">Video</button><button class="filter-btn" data-filter="audio">Audio</button><button class="filter-btn" data-filter="edu">Educacion</button><button class="filter-btn" data-filter="tools">Productividad</button></nav><section class="periodic" id="tabla">${tools.map(renderToolCard).join("")}</section></div>`);
     setView("notebooklmView", `<header class="header"><div class="header-content"><button class="btn-back" data-back="dashboardView">Volver</button><button class="btn-logout" id="logoutBtn6">Salir</button></div></header><div class="content-container"><section class="content-section academic-hero"><span class="section-kicker">Investigacion asistida</span><h1 class="section-title">NotebookLM</h1><p class="section-text">NotebookLM trabaja con documentos propios. Permite resumir, comparar y organizar informacion a partir de fuentes seleccionadas por el docente o el estudiante.</p></section><section class="content-section"><h2 class="section-subtitle">Usos recomendados</h2><div class="academic-list"><div class="academic-item"><h3>Resumir documentos</h3><p>Extrae ideas centrales de textos academicos y materiales de clase.</p></div><div class="academic-item"><h3>Preparar explicaciones</h3><p>Convierte fuentes complejas en versiones mas claras para estudiantes.</p></div><div class="academic-item"><h3>Comparar fuentes</h3><p>Encuentra coincidencias, diferencias y conceptos clave entre documentos.</p></div><div class="academic-item"><h3>Organizar estudio</h3><p>Ayuda a construir guias, preguntas de repaso y rutas de lectura.</p></div></div></section><section class="content-section"><h2 class="section-subtitle">Buenas practicas</h2><ul class="section-list"><li>Sube documentos confiables y recientes para evitar conclusiones debiles.</li><li>Usa sus resumentes como punto de partida, no como sustituto de la lectura.</li><li>Contrasta citas, conceptos y fechas antes de llevarlos al aula.</li><li>Combina la herramienta con preguntas del docente para profundizar.</li></ul></section></div>`);
+    setView("equipoView", `<header class="header"><div class="header-content"><button class="btn-back" data-back="dashboardView">Volver</button><button class="btn-logout" id="logoutBtn7">Salir</button></div></header><div class="content-container"><section class="content-section academic-hero"><span class="section-kicker">Equipo del proyecto</span><h1 class="section-title">Desarrolladores y direccion academica</h1><p class="section-text">Esta propuesta fue construida desde la Licenciatura en Informatica de la UPTC para acercar la inteligencia artificial a procesos reales de aprendizaje.</p></section><div class="developers-section"><h2 class="developers-title">Equipo</h2><div class="developers-grid"><div class="developer-card"><div class="developer-avatar"><img src="Recursos/SHARON.JPG" alt="Sharon Valentina Rodriguez Pena"></div><h3 class="developer-name">Sharon Valentina Rodriguez Pena</h3><p class="developer-role">Desarrolladora Web</p><p class="developer-institution">Universidad Pedagogica y Tecnologica de Colombia</p><p class="developer-contact">sharon.rodriguez@uptc.edu.co</p></div><div class="developer-card"><div class="developer-avatar"><img src="Recursos/CRISTIAN.JPG" alt="Cristian Felipe Gomez Iguavita"></div><h3 class="developer-name">Cristian Felipe Gomez Iguavita</h3><p class="developer-role">Desarrollador Web</p><p class="developer-institution">Universidad Pedagogica y Tecnologica de Colombia</p><p class="developer-contact">cristian.gomez17@uptc.edu.co</p></div><div class="developer-card"><div class="developer-avatar"><img src="Recursos/Profe.jpg" alt="Yenny Carolina Riano Castellanos"></div><h3 class="developer-name">Yenny Carolina Riano Castellanos</h3><p class="developer-role">Directora del Proyecto</p><p class="developer-institution">Universidad Pedagogica y Tecnologica de Colombia</p><p class="developer-contact">yennycarolina.riano@uptc.edu.co</p></div></div></div></div>`);
   }
 
   function renderToolCard([cat, url, video, name, desc, initials, label, dot, gradient]) { return `<button class="app" data-cat="${cat}" data-url="${url}" data-video="${video}" data-name="${name}" data-desc="${desc}"><div class="logo" style="background:linear-gradient(135deg,${gradient})">${initials}</div><div class="meta"><div class="name">${name}</div><div class="cat"><span class="cat-dot ${dot}"></span>${label}</div></div></button>`; }
@@ -90,6 +92,7 @@
     elements.views = document.querySelectorAll(".view");
     elements.loginView = document.getElementById("loginView");
     elements.dashboardView = document.getElementById("dashboardView");
+    elements.appHeader = document.getElementById("appHeader");
     elements.unitCards = document.querySelectorAll(".unit-card");
     elements.backButtons = document.querySelectorAll(".btn-back");
     elements.logoutButtons = document.querySelectorAll('[id^="logoutBtn"]');
@@ -104,6 +107,8 @@
     elements.profilePanelAvatar = document.getElementById("profilePanelAvatar");
     elements.profilePanelName = document.getElementById("profilePanelName");
     elements.profilePanelEmail = document.getElementById("profilePanelEmail");
+    elements.profileImageInput = document.getElementById("profileImageInput");
+    elements.profileUploadPreview = document.getElementById("profileUploadPreview");
     elements.dashboardNavLinks = document.querySelectorAll(".top-nav-link");
     elements.profileDropdownLinks = document.querySelectorAll(".profile-dropdown-link");
     elements.emailInput = document.getElementById("emailInput");
@@ -165,7 +170,7 @@
     setText(elements.toggleBtn1, "Mostrar");
     setText(elements.toggleBtn2, "Mostrar");
     setText(document.querySelector(".header-logo"), "IA");
-    setText(document.getElementById("logoutBtn1"), "Salir");
+    setText(document.getElementById("logoutBtn1"), "Cerrar sesion");
     const welcomeTitle = document.querySelector(".welcome-title");
     if (welcomeTitle) {
       welcomeTitle.innerHTML = 'Bienvenido(a), <span id="userName"></span>';
@@ -177,13 +182,6 @@
       welcomeCopy.classList.add("welcome-copy");
       welcomeCopy.removeAttribute("style");
     }
-    ["Que es la IA", "IA en educacion", "Herramientas IA", "Evaluacion", "NotebookLM"].forEach((text, index) => setText(document.querySelectorAll(".unit-title")[index], text));
-    ["Comprende conceptos base e impacto de la inteligencia artificial.", "Analiza usos de la IA para planear, acompanar y evaluar.", "Explora aplicaciones para investigacion, redaccion y creatividad.", "Pon a prueba tus conocimientos sobre herramientas de IA.", "Descubre como sintetizar documentos y organizar fuentes."].forEach((text, index) => setText(document.querySelectorAll(".unit-description")[index], text));
-    ["IA", "ED", "TI", "EV", "NB"].forEach((text, index) => setText(document.querySelectorAll(".unit-icon")[index], text));
-    setText(document.querySelector(".developers-title"), "Desarrolladores del Proyecto");
-    ["Sharon Valentina Rodriguez Pena", "Cristian Felipe Gomez Iguavita", "Yenny Carolina Riano Castellanos"].forEach((text, index) => setText(document.querySelectorAll(".developer-name")[index], text));
-    document.querySelectorAll(".developer-institution").forEach((node) => setText(node, "Universidad Pedagogica y Tecnologica de Colombia"));
-    ["sharon.rodriguez@uptc.edu.co", "cristian.gomez17@uptc.edu.co", "yennycarolina.riano@uptc.edu.co"].forEach((text, index) => setText(document.querySelectorAll(".developer-contact")[index], text));
   }
 
   function bindAuthEvents() {
@@ -197,8 +195,8 @@
     elements.unitCards.forEach((card) => card.addEventListener("click", () => card.dataset.view === "evaluacionView" ? captureUserDataForEvaluation() : showView(card.dataset.view)));
     elements.backButtons.forEach((button) => button.addEventListener("click", () => showView(button.dataset.back)));
     elements.logoutButtons.forEach((button) => button.addEventListener("click", handleLogout));
-    elements.dashboardNavLinks.forEach((button) => button.addEventListener("click", () => handleDashboardNavigation(button)));
-    elements.profileDropdownLinks.forEach((button) => button.addEventListener("click", () => handleDashboardNavigation(button)));
+    elements.dashboardNavLinks.forEach((button) => button.addEventListener("click", () => handleAppNavigation(button)));
+    elements.profileDropdownLinks.forEach((button) => button.addEventListener("click", () => handleAppNavigation(button)));
     elements.profileMenuBtn?.addEventListener("click", toggleProfileMenu);
     document.addEventListener("click", (event) => {
       if (!elements.profileMenuBtn || !elements.profileDropdown) return;
@@ -208,6 +206,7 @@
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") closeProfileMenu();
     });
+    elements.profileImageInput?.addEventListener("change", handleProfileImageChange);
   }
 
   function bindCatalogEvents() {
@@ -358,6 +357,8 @@
     } finally {
       state.currentUser = null;
       localStorage.removeItem(STORAGE_KEYS.currentUser);
+      localStorage.removeItem(STORAGE_KEYS.currentView);
+      localStorage.removeItem(STORAGE_KEYS.profilePanelOpen);
       showView("loginView");
       clearInputs();
       clearAlert();
@@ -366,6 +367,7 @@
   function showDashboard(options = {}) {
     elements.views.forEach((view) => view.classList.remove("active"));
     elements.dashboardView?.classList.add("active");
+    setAppShellVisible(true);
     const currentName = state.currentUser?.name || "Invitado";
     const currentEmail = state.currentUser?.email || "correo@institucion.edu.co";
     const initials = getUserInitials(currentName);
@@ -377,11 +379,24 @@
     setText(elements.profilePanelAvatar, initials);
     setText(elements.profilePanelName, currentName);
     setText(elements.profilePanelEmail, currentEmail);
+    renderProfileAvatar(loadStoredProfileImage(), initials);
     if (!options.keepNavState) activateDashboardNav("inicio");
     if (!options.showProfilePanel) hideProfilePanel();
+    if (!options.skipPersistence) persistAppLocation("dashboardView", options.showProfilePanel === true);
     closeProfileMenu();
   }
-  function showView(viewId) { elements.views.forEach((view) => view.classList.remove("active")); document.getElementById(viewId)?.classList.add("active"); window.scrollTo({ top: 0, behavior: "smooth" }); }
+  function showView(viewId) {
+    elements.views.forEach((view) => view.classList.remove("active"));
+    document.getElementById(viewId)?.classList.add("active");
+    setAppShellVisible(viewId !== "loginView");
+    if (viewId !== "loginView") {
+      activateDashboardNav(viewId === "dashboardView" ? "inicio" : viewId);
+      hideProfilePanel();
+      persistAppLocation(viewId, false);
+      closeProfileMenu();
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
   function showAlert(message, type) { if (elements.alertContainer) elements.alertContainer.innerHTML = `<div class="alert alert-${type}">${message}</div>`; }
   function clearAlert() { if (elements.alertContainer) elements.alertContainer.innerHTML = ""; }
   function clearInputs() { if (elements.emailInput) elements.emailInput.value = ""; if (elements.passwordInput) elements.passwordInput.value = ""; if (elements.confirmPasswordInput) elements.confirmPasswordInput.value = ""; if (elements.nameInput) elements.nameInput.value = ""; }
@@ -664,12 +679,12 @@
     if (error) throw error;
     if (!data.session?.user) {
       state.currentUser = loadStoredCurrentUser();
-      if (state.currentUser) showDashboard();
+      if (state.currentUser) restoreAppLocation();
       return;
     }
     state.currentUser = mapSupabaseUser(data.session.user);
     persistCurrentUser();
-    showDashboard();
+    restoreAppLocation();
   }
 
   function mapSupabaseUser(user) {
@@ -698,53 +713,39 @@
     elements.profileMenuBtn?.setAttribute("aria-expanded", "false");
   }
 
-  function handleDashboardNavigation(button) {
-    const navTarget = button.dataset.dashboardNav;
-    const viewTarget = button.dataset.dashboardView;
+  function handleAppNavigation(button) {
+    const panelTarget = button.dataset.appPanel;
+    const viewTarget = button.dataset.appView;
     closeProfileMenu();
-    if (navTarget === "inicio") {
-      activateDashboardNav("inicio");
-      hideProfilePanel();
-      showDashboard();
-      return;
-    }
-    if (navTarget === "desarrolladores") {
-      activateDashboardNav("desarrolladores");
-      hideProfilePanel();
-      document.querySelector(".developers-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
-      return;
-    }
-    if (navTarget === "perfil") {
+    if (panelTarget === "profile") {
       activateDashboardNav("perfil");
       showDashboard({ keepNavState: true, showProfilePanel: true });
       showProfilePanel();
       return;
     }
-    if (viewTarget) {
-      activateDashboardNav(viewTarget);
-      hideProfilePanel();
-      if (viewTarget === "evaluacionView") {
-        captureUserDataForEvaluation();
-        return;
-      }
-      showView(viewTarget);
-    }
+    if (!viewTarget) return;
+    if (viewTarget === "dashboardView") return showDashboard();
+    if (viewTarget === "evaluacionView") return captureUserDataForEvaluation();
+    showView(viewTarget);
   }
 
   function activateDashboardNav(target) {
     elements.dashboardNavLinks.forEach((button) => {
-      const isActive = button.dataset.dashboardNav === target || button.dataset.dashboardView === target;
+      const isActive = (target === "perfil" && button.dataset.appPanel === "profile") || button.dataset.appView === target;
       button.classList.toggle("active", isActive);
     });
   }
 
   function showProfilePanel() {
     elements.profilePanel?.classList.remove("hidden");
+    persistAppLocation("dashboardView", true);
     elements.profilePanel?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function hideProfilePanel() {
     elements.profilePanel?.classList.add("hidden");
+    const currentView = loadStoredCurrentView();
+    if (currentView === "dashboardView") persistAppLocation("dashboardView", false);
   }
 
   function getUserInitials(name) {
@@ -754,5 +755,71 @@
       .slice(0, 2)
       .map((part) => part.charAt(0).toUpperCase())
       .join("") || "IA";
+  }
+
+  function setAppShellVisible(isVisible) {
+    elements.appHeader?.classList.toggle("hidden", !isVisible);
+    document.body.classList.toggle("app-shell-mode", isVisible);
+  }
+
+  function handleProfileImageChange(event) {
+    const [file] = event.target.files || [];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const imageData = String(reader.result || "");
+      localStorage.setItem(STORAGE_KEYS.profileImage, imageData);
+      renderProfileAvatar(imageData, getUserInitials(state.currentUser?.name || "IA"));
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function renderProfileAvatar(imageData, fallbackInitials) {
+    [elements.profileInitials, elements.profileSummaryAvatar, elements.profilePanelAvatar, elements.profileUploadPreview].forEach((node) => {
+      if (!node) return;
+      node.innerHTML = "";
+      if (imageData) {
+        const img = document.createElement("img");
+        img.src = imageData;
+        img.alt = "Foto de perfil";
+        img.className = "profile-avatar-image";
+        node.appendChild(img);
+        return;
+      }
+      node.textContent = fallbackInitials;
+    });
+  }
+
+  function loadStoredProfileImage() {
+    return localStorage.getItem(STORAGE_KEYS.profileImage) || "";
+  }
+
+  function persistAppLocation(viewId, isProfilePanelOpen = false) {
+    localStorage.setItem(STORAGE_KEYS.currentView, viewId);
+    localStorage.setItem(STORAGE_KEYS.profilePanelOpen, isProfilePanelOpen ? "1" : "0");
+  }
+
+  function loadStoredCurrentView() {
+    return localStorage.getItem(STORAGE_KEYS.currentView) || "dashboardView";
+  }
+
+  function restoreAppLocation() {
+    const savedView = loadStoredCurrentView();
+    const profilePanelOpen = localStorage.getItem(STORAGE_KEYS.profilePanelOpen) === "1";
+    if (profilePanelOpen) {
+      activateDashboardNav("perfil");
+      showDashboard({ keepNavState: true, showProfilePanel: true, skipPersistence: true });
+      showProfilePanel();
+      return;
+    }
+    if (savedView === "dashboardView") {
+      showDashboard({ skipPersistence: true });
+      return;
+    }
+    if (savedView === "evaluacionView") {
+      showDashboard({ skipPersistence: true });
+      return;
+    }
+    showView(savedView);
   }
 })();
