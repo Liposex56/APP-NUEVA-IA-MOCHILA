@@ -414,8 +414,22 @@
 
   function updateCount() { if (!elements.appCount) return; elements.appCount.textContent = String(Array.from(elements.apps).filter((app) => app.style.display !== "none").length); }
   function closeVideoModal() { if (elements.videoModal) elements.videoModal.classList.remove("active"); if (elements.modalVideo) elements.modalVideo.src = ""; }
-  function initializeQuiz() { state.currentQuestions = shuffleArray(allQuestions); state.userAnswers = new Array(state.currentQuestions.length).fill(null); renderQuiz(); }
+  function initializeQuiz() {
+    state.currentQuestions = shuffleArray(allQuestions).map(prepareQuestionForQuiz);
+    state.userAnswers = new Array(state.currentQuestions.length).fill(null);
+    renderQuiz();
+  }
   function shuffleArray(items) { const shuffled = [...items]; for (let i = shuffled.length - 1; i > 0; i -= 1) { const j = Math.floor(Math.random() * (i + 1)); [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; } return shuffled; }
+
+  function prepareQuestionForQuiz(question) {
+    const optionEntries = question.options.map((option, index) => ({ option, isCorrect: index === question.correct }));
+    const shuffledEntries = shuffleArray(optionEntries);
+    return {
+      ...question,
+      options: shuffledEntries.map((entry) => entry.option),
+      correct: shuffledEntries.findIndex((entry) => entry.isCorrect)
+    };
+  }
 
   function renderQuiz() {
     if (!elements.quizContainer) return;
