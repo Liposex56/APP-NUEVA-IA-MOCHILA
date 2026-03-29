@@ -1,10 +1,10 @@
-(() => {
+﻿(() => {
   const STORAGE_KEYS = { currentUser: "iam_current_user", profileImage: "iam_profile_image", currentView: "iam_current_view" };
   const SUPABASE_URL = "https://bxxudrezbaxrmwekeyoe.supabase.co";
   const SUPABASE_KEY = "sb_publishable_SnBuzPXugGRag9uAP4NbpQ_HzPhP6BK";
   const supabaseClient = window.supabase?.createClient(SUPABASE_URL, SUPABASE_KEY);
   const elements = {};
-  const state = { isLoginMode: true, currentUser: null, authPending: false, evaluationUserData: { name: "", email: "", institution: "" }, currentQuestions: [], userAnswers: [], resultsChartInstance: null };
+  const state = { isLoginMode: true, currentUser: null, authPending: false, evaluationUserData: { name: "", email: "", documentId: "" }, currentQuestions: [], userAnswers: [], resultsChartInstance: null };
 
   const allQuestions = [
     { category: "Asistentes", question: "Que herramienta se integra mejor con Microsoft 365?", options: ["ChatGPT", "Copilot", "Claude", "Perplexity"], correct: 1 },
@@ -405,9 +405,9 @@
     if (!name || !name.trim()) return window.alert("El nombre es obligatorio para tomar la evaluacion.");
     const email = state.currentUser?.email || window.prompt("Ingresa tu correo electronico:");
     if (!email || !email.includes("@")) return window.alert("Ingresa un correo electronico valido.");
-    const institution = window.prompt("Ingresa tu institucion educativa:");
-    if (!institution || !institution.trim()) return window.alert("La institucion es obligatoria para tomar la evaluacion.");
-    state.evaluationUserData = { name: name.trim(), email: email.trim(), institution: institution.trim() };
+    const documentId = window.prompt("Ingresa tu documento de identidad:");
+    if (!documentId || !documentId.trim()) return window.alert("El documento de identidad es obligatorio para tomar la evaluacion.");
+    state.evaluationUserData = { name: name.trim(), email: email.trim(), documentId: documentId.trim() };
     initializeQuiz();
     showView("evaluacionView");
   }
@@ -492,7 +492,7 @@
     if (!elements.resultsChart || typeof Chart === "undefined") return;
     const ctx = elements.resultsChart.getContext("2d");
     if (state.resultsChartInstance) state.resultsChartInstance.destroy();
-    state.resultsChartInstance = new Chart(ctx, { type: "doughnut", data: { labels: ["Correctas", "Incorrectas"], datasets: [{ data: [correct, incorrect], backgroundColor: ["rgba(34, 197, 94, 0.8)", "rgba(239, 68, 68, 0.8)"], borderColor: ["rgba(34, 197, 94, 1)", "rgba(239, 68, 68, 1)"], borderWidth: 2 }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: "bottom", labels: { color: "#e0e7ff", font: { size: 14, weight: "bold" }, padding: 20 } } } } });
+    state.resultsChartInstance = new Chart(ctx, { type: "doughnut", data: { labels: ["Correctas", "Incorrectas"], datasets: [{ data: [correct, incorrect], backgroundColor: ["rgba(34, 197, 94, 0.8)", "rgba(239, 68, 68, 0.8)"], borderColor: ["rgba(34, 197, 94, 1)", "rgba(239, 68, 68, 1)"], borderWidth: 2 }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: "bottom", labels: { color: "#1f2937", font: { size: 14, weight: "bold" }, padding: 20 } } } } });
   }
 
   function showDetailedResults() {
@@ -526,39 +526,38 @@
     if (!elements.certificateCanvas) throw new Error("No se encontro el lienzo del certificado.");
     const canvas = elements.certificateCanvas;
     const ctx = canvas.getContext("2d");
-    const template = await loadImage("Recursos/Certificado de Participación Módulo IA Educación UPTC.png");
+    const template = await loadImage("Recursos/Certificado%20de%20Participaci%C3%B3n%20M%C3%B3dulo%20IA%20Educaci%C3%B3n%20UPTC.png");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(template, 0, 0, canvas.width, canvas.height);
 
     const dateStr = new Date().toLocaleDateString("es-CO", { day: "numeric", month: "long", year: "numeric" });
 
+    const paperColor = "#fbfaf6";
     const nameX = 528;
-    const nameY = 470;
-    const institutionX = 528;
-    const institutionY = 560;
-    const dateValueX = 610;
+    const nameY = 454;
+    const documentX = 528;
+    const documentY = 561;
+    const dateX = 602;
     const dateY = 742;
+
+    ctx.fillStyle = paperColor;
+    ctx.fillRect(232, 420, 592, 62);
+    ctx.fillRect(404, 545, 250, 24);
+    ctx.fillRect(525, 726, 158, 22);
 
     ctx.textAlign = "center";
     ctx.fillStyle = "#111111";
     ctx.font = "700 42px serif";
     fitText(ctx, state.evaluationUserData.name.toUpperCase(), nameX, nameY, 610, 42, 30, "700", "serif");
 
-    ctx.strokeStyle = "#2c6d73";
-    ctx.lineWidth = 1.2;
-    ctx.beginPath();
-    ctx.moveTo(230, 490);
-    ctx.lineTo(826, 490);
-    ctx.stroke();
-
     ctx.fillStyle = "#2c6d73";
-    ctx.font = "700 18px serif";
-    fitText(ctx, state.evaluationUserData.institution || "UPTC", institutionX, institutionY, 360, 18, 14, "700", "serif");
+    ctx.font = "700 16px serif";
+    fitText(ctx, state.evaluationUserData.documentId || "Sin documento", documentX, documentY, 220, 16, 13, "700", "serif");
 
-    ctx.textAlign = "left";
+    ctx.textAlign = "center";
     ctx.fillStyle = "#2f2f2f";
-    ctx.font = "18px serif";
-    ctx.fillText(dateStr, dateValueX, dateY);
+    ctx.font = "16px serif";
+    fitText(ctx, dateStr, dateX, dateY, 170, 16, 13, "400", "serif");
     return canvas;
   }
 
@@ -784,3 +783,4 @@
     showView(savedView);
   }
 })();
+
