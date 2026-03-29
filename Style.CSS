@@ -2247,3 +2247,69 @@ h3 {
     border-radius: 20px;
   }
 }
+
+/* ==================== AJUSTES DE CONTRASTE ==================== */
+.section-text,
+.welcome-copy,
+.unit-description,
+.feature-text,
+.developer-institution,
+.developer-contact,
+.video-description,
+.cat,
+.metric-label,
+.profile-upload-help,
+.profile-summary-email,
+.footer-brand-text,
+.footer-bottom p,
+.question-text,
+.results-container .section-text,
+.academic-item p,
+.profile-card strong,
+.profile-data-group strong {
+  color: #2b3135 !important;
+}
+
+.profile-card-label,
+.section-kicker,
+.category-title,
+.profile-group-title,
+.form-label,
+.question-number {
+  color: #1d5c63 !important;
+}
+
+.option-btn,
+.filter-btn,
+.app,
+.profile-card,
+.home-highlight-card,
+.content-section,
+.developer-card,
+.metric-card,
+.video-modal-content {
+  color: #171717;
+}
+
+.option-btn .option-letter,
+.unit-icon,
+.logo {
+  color: #ffffff;
+}
+
+.results-title,
+.section-title,
+.section-subtitle,
+.developers-title,
+.feature-title,
+.video-modal-title,
+.developer-name {
+  color: #132b33 !important;
+}
+
+.profile-summary-name,
+.profile-dropdown-link,
+.top-nav-link,
+.profile-trigger {
+  color: #ffffff !important;
+}

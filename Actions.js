@@ -533,35 +533,31 @@
     const dateStr = new Date().toLocaleDateString("es-CO", { day: "numeric", month: "long", year: "numeric" });
 
     const nameX = 528;
-    const nameY = 478;
+    const nameY = 470;
     const institutionX = 528;
-    const institutionY = 612;
-    const dateLabelX = 405;
-    const dateValueX = 590;
-    const dateY = 770;
+    const institutionY = 560;
+    const dateValueX = 610;
+    const dateY = 742;
 
     ctx.textAlign = "center";
     ctx.fillStyle = "#111111";
-    ctx.font = "700 44px serif";
-    fitText(ctx, state.evaluationUserData.name.toUpperCase(), nameX, nameY, 650, 44, 32, "700", "serif");
+    ctx.font = "700 42px serif";
+    fitText(ctx, state.evaluationUserData.name.toUpperCase(), nameX, nameY, 610, 42, 30, "700", "serif");
 
     ctx.strokeStyle = "#2c6d73";
     ctx.lineWidth = 1.2;
     ctx.beginPath();
-    ctx.moveTo(245, 500);
-    ctx.lineTo(815, 500);
+    ctx.moveTo(230, 490);
+    ctx.lineTo(826, 490);
     ctx.stroke();
 
     ctx.fillStyle = "#2c6d73";
-    ctx.font = "700 24px sans-serif";
-    fitText(ctx, state.evaluationUserData.institution || "UPTC", institutionX, institutionY, 650, 24, 18, "700", "sans-serif");
+    ctx.font = "700 18px serif";
+    fitText(ctx, state.evaluationUserData.institution || "UPTC", institutionX, institutionY, 360, 18, 14, "700", "serif");
 
     ctx.textAlign = "left";
-    ctx.fillStyle = "#111111";
-    ctx.font = "700 18px serif";
-    ctx.fillText("Fecha de Emision:", dateLabelX, dateY);
     ctx.fillStyle = "#2f2f2f";
-    ctx.font = "20px serif";
+    ctx.font = "18px serif";
     ctx.fillText(dateStr, dateValueX, dateY);
     return canvas;
   }
