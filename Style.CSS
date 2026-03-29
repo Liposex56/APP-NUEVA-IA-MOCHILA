@@ -1,5 +1,20 @@
 @import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@400;600;700;800&display=swap");
 
+:root {
+  --uptc-paper: #f7f4ec;
+  --uptc-surface: #ffffff;
+  --uptc-surface-soft: #f2efe6;
+  --uptc-ink: #171717;
+  --uptc-muted: #5e666b;
+  --uptc-gold: #d3a326;
+  --uptc-gold-deep: #b78616;
+  --uptc-teal: #2c6d73;
+  --uptc-teal-deep: #184d57;
+  --uptc-blue: #1f6f9d;
+  --uptc-line: rgba(38, 88, 96, 0.18);
+  --uptc-shadow: 0 18px 40px rgba(23, 23, 23, 0.08);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -1950,4 +1965,285 @@ canvas {
 }
 @media (min-width: 1281px) {
   /* hi-res laptops and desktops */
+}
+
+/* ==================== REDISENO UPTC ==================== */
+body {
+  font-family: "Source Sans 3", sans-serif;
+  background:
+    radial-gradient(circle at 92% 18%, rgba(211, 163, 38, 0.2), transparent 16%),
+    radial-gradient(circle at 100% 55%, rgba(211, 163, 38, 0.88), transparent 20%),
+    radial-gradient(circle at 104% 60%, rgba(23, 23, 23, 0.96), transparent 24%),
+    linear-gradient(180deg, #f9f6ef 0%, #f3efe4 100%);
+  color: var(--uptc-ink);
+}
+
+h1,
+h2,
+h3 {
+  color: var(--uptc-ink);
+}
+
+.header {
+  background: rgba(34, 97, 106, 0.96);
+  border-bottom: 2px solid rgba(211, 163, 38, 0.55);
+  box-shadow: 0 10px 25px rgba(23, 23, 23, 0.08);
+}
+
+.header-brand-title,
+.top-nav-link,
+.profile-trigger,
+.profile-summary-name,
+.profile-dropdown-link {
+  color: #ffffff;
+}
+
+.header-brand-subtitle,
+.profile-trigger-icons,
+.profile-summary-email {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.header-logo,
+.logo-login img {
+  background: linear-gradient(135deg, var(--uptc-gold), #f4d476);
+  color: var(--uptc-ink);
+  box-shadow: 0 12px 28px rgba(183, 134, 22, 0.25);
+}
+
+.top-nav-link {
+  border-radius: 10px;
+  padding: 11px 16px;
+}
+
+.top-nav-link:hover,
+.top-nav-link.active {
+  background: rgba(18, 63, 69, 0.92);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.profile-trigger {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.profile-dropdown {
+  background: #12383f;
+  border-color: rgba(211, 163, 38, 0.24);
+}
+
+.profile-summary,
+.profile-dropdown-link:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.login-box,
+.welcome-section,
+.home-highlight-card,
+.profile-panel,
+.profile-data-group,
+.profile-identity-card,
+.content-section,
+.feature-card,
+.academic-item,
+.metric-card,
+.developer-card,
+.footer-logo-card,
+.results-container,
+.quiz-question,
+.quiz-category,
+.video-modal-content,
+.compact-panel {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--uptc-line);
+  box-shadow: var(--uptc-shadow);
+  color: var(--uptc-ink);
+}
+
+.login-title,
+.section-title,
+.results-title,
+.developers-title,
+.feature-title,
+.section-subtitle,
+.name,
+.developer-name {
+  color: var(--uptc-ink);
+}
+
+.login-subtitle,
+.section-text,
+.welcome-copy,
+.developer-institution,
+.developer-contact,
+.feature-text,
+.unit-description,
+.profile-upload-help,
+.metric-label,
+.video-description,
+.cat,
+.question-text {
+  color: var(--uptc-muted);
+}
+
+.welcome-section {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(244, 239, 226, 0.96)),
+    radial-gradient(circle at top right, rgba(211, 163, 38, 0.2), transparent 34%);
+}
+
+.section-kicker,
+.profile-card-label,
+.category-title {
+  color: var(--uptc-teal);
+}
+
+.btn-primary,
+.download-certificate-btn,
+.submit-quiz-btn,
+.visit-site-btn {
+  background: linear-gradient(135deg, var(--uptc-gold), #f3d880);
+  color: var(--uptc-ink);
+  border: none;
+}
+
+.secondary-certificate-btn,
+.reset-quiz-btn,
+.btn-back {
+  background: var(--uptc-teal);
+  color: #ffffff;
+}
+
+.link-button,
+.developer-role,
+.footer-brand h3,
+.footer-bottom p:last-child,
+.metric-number,
+.section-kicker {
+  color: var(--uptc-gold-deep);
+}
+
+.form-label,
+.profile-group-title,
+.welcome-title,
+.video-modal-title,
+.results-title,
+.question-number {
+  color: var(--uptc-teal-deep);
+}
+
+.form-input,
+.profile-image-input,
+.option-btn,
+.filter-btn,
+.app,
+.profile-card {
+  background: var(--uptc-surface);
+  border-color: rgba(44, 109, 115, 0.18);
+  color: var(--uptc-ink);
+}
+
+.form-input::placeholder {
+  color: #8d9599;
+}
+
+.unit-icon,
+.logo,
+.profile-initials,
+.profile-summary-avatar,
+.profile-panel-avatar,
+.profile-upload-preview {
+  background: linear-gradient(135deg, var(--uptc-teal), var(--uptc-blue));
+  color: #ffffff;
+}
+
+.unit-card,
+.app,
+.filter-btn,
+.option-btn {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(44, 109, 115, 0.16);
+  color: var(--uptc-ink);
+}
+
+.unit-card::before,
+.feature-icon,
+.cat-dot.c-chat,
+.cat-dot.c-img,
+.cat-dot.c-video,
+.cat-dot.c-audio,
+.cat-dot.c-edu,
+.cat-dot.c-tools {
+  background: linear-gradient(90deg, var(--uptc-gold), var(--uptc-gold-deep));
+}
+
+.unit-card:hover,
+.app:hover,
+.option-btn.selected,
+.filter-btn.active {
+  border-color: rgba(211, 163, 38, 0.58);
+  box-shadow: 0 16px 30px rgba(183, 134, 22, 0.14);
+}
+
+.site-footer {
+  background: linear-gradient(180deg, #1d5c63 0%, #174a51 100%);
+  color: #ffffff;
+}
+
+.footer-brand p,
+.footer-brand-text,
+.footer-bottom p {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.footer-logo-card {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.score-display {
+  background: linear-gradient(135deg, var(--uptc-teal), var(--uptc-blue));
+  color: #ffffff;
+}
+
+.score-display.fail {
+  background: linear-gradient(135deg, #9f2f2f, #c85a3d);
+}
+
+.chart-container {
+  background: rgba(44, 109, 115, 0.06);
+}
+
+.video-modal {
+  background: rgba(17, 17, 17, 0.52);
+}
+
+.close-modal {
+  background: var(--uptc-teal);
+  color: #ffffff;
+}
+
+.profile-panel-layout {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(245, 241, 230, 0.96)),
+    radial-gradient(circle at top right, rgba(211, 163, 38, 0.18), transparent 26%);
+}
+
+@media (max-width: 768px) {
+  body {
+    background:
+      radial-gradient(circle at 100% 12%, rgba(211, 163, 38, 0.2), transparent 16%),
+      linear-gradient(180deg, #faf7f0 0%, #f4efe3 100%);
+  }
+
+  .header {
+    padding: 12px 0;
+  }
+
+  .login-box,
+  .welcome-section,
+  .content-section,
+  .developers-section,
+  .results-container {
+    border-radius: 20px;
+  }
 }

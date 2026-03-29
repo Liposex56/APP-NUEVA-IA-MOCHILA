@@ -526,114 +526,43 @@
     if (!elements.certificateCanvas) throw new Error("No se encontro el lienzo del certificado.");
     const canvas = elements.certificateCanvas;
     const ctx = canvas.getContext("2d");
-    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    gradient.addColorStop(0, "#0a2240");
-    gradient.addColorStop(0.5, "#123d73");
-    gradient.addColorStop(1, "#0b2446");
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "rgba(255,255,255,0.03)";
-    ctx.fillRect(88, 88, canvas.width - 176, canvas.height - 176);
-    ctx.strokeStyle = "#d4af37";
-    ctx.lineWidth = 12;
-    ctx.strokeRect(48, 48, canvas.width - 96, canvas.height - 96);
-    ctx.strokeStyle = "rgba(239, 226, 170, 0.9)";
-    ctx.lineWidth = 2;
-    ctx.strokeRect(68, 68, canvas.width - 136, canvas.height - 136);
+    const template = await loadImage("Recursos/Certificado de Participación Módulo IA Educación UPTC.png");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(template, 0, 0, canvas.width, canvas.height);
 
-    ctx.beginPath();
-    ctx.strokeStyle = "rgba(212, 175, 55, 0.18)";
-    ctx.lineWidth = 1.5;
-    ctx.arc(160, 160, 120, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(canvas.width - 160, canvas.height - 170, 140, 0, Math.PI * 2);
-    ctx.stroke();
+    const dateStr = new Date().toLocaleDateString("es-CO", { day: "numeric", month: "long", year: "numeric" });
 
-    const [logoIAMochila, logoUptc, logoLic, logoFac] = await Promise.all([
-      loadImage("Recursos/Logo IA en la Mochila.png"),
-      loadImage("Recursos/Logo_de_la_UPTC.svg.png"),
-      loadImage("Recursos/Logo LI.png"),
-      loadImage("Recursos/logo_FacultadCienciasEducacion.png")
-    ]);
-
-    drawLogoImage(ctx, logoUptc, 118, 90, 130, 96);
-    drawLogoImage(ctx, logoLic, 268, 98, 180, 74);
-    drawLogoImage(ctx, logoFac, 760, 98, 210, 76);
-    drawLogoImage(ctx, logoIAMochila, 1020, 90, 88, 88);
+    const nameX = 528;
+    const nameY = 478;
+    const institutionX = 528;
+    const institutionY = 612;
+    const dateLabelX = 405;
+    const dateValueX = 590;
+    const dateY = 770;
 
     ctx.textAlign = "center";
-    ctx.fillStyle = "#f5d77d";
-    ctx.font = "700 17px serif";
-    ctx.fillText("UNIVERSIDAD PEDAGOGICA Y TECNOLOGICA DE COLOMBIA", canvas.width / 2, 165);
-    ctx.font = "700 15px serif";
-    ctx.fillStyle = "#d9e9ff";
-    ctx.fillText("Facultad de Ciencias de la Educacion | Licenciatura en Informatica", canvas.width / 2, 194);
+    ctx.fillStyle = "#111111";
+    ctx.font = "700 44px serif";
+    fitText(ctx, state.evaluationUserData.name.toUpperCase(), nameX, nameY, 650, 44, 32, "700", "serif");
 
-    ctx.fillStyle = "#f2df9b";
-    ctx.font = "700 20px serif";
-    ctx.fillText("CERTIFICADO", canvas.width / 2, 268);
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "900 54px serif";
-    ctx.fillText("DE PARTICIPACION", canvas.width / 2, 332);
-
-    ctx.fillStyle = "#d9e9ff";
-    ctx.font = "26px sans-serif";
-    ctx.fillText("Se certifica que", canvas.width / 2, 408);
-    ctx.fillStyle = "#f3dd8e";
-    ctx.font = "bold 52px serif";
-    ctx.fillText(state.evaluationUserData.name.toUpperCase(), canvas.width / 2, 492);
-
-    ctx.strokeStyle = "#d4af37";
-    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = "#2c6d73";
+    ctx.lineWidth = 1.2;
     ctx.beginPath();
-    ctx.moveTo(200, 516);
-    ctx.lineTo(1000, 516);
+    ctx.moveTo(245, 500);
+    ctx.lineTo(815, 500);
     ctx.stroke();
 
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "24px sans-serif";
-    ctx.fillText("aprobo satisfactoriamente la evaluacion del modulo", canvas.width / 2, 585);
-    ctx.fillStyle = "#d9e9ff";
-    ctx.font = "bold 33px sans-serif";
-    ctx.fillText("Herramientas de Inteligencia Artificial", canvas.width / 2, 640);
-    ctx.fillText("para la Educacion", canvas.width / 2, 682);
+    ctx.fillStyle = "#2c6d73";
+    ctx.font = "700 24px sans-serif";
+    fitText(ctx, state.evaluationUserData.institution || "UPTC", institutionX, institutionY, 650, 24, 18, "700", "sans-serif");
 
-    ctx.fillStyle = "rgba(255,255,255,0.08)";
-    roundRect(ctx, 150, 720, 900, 86, 22);
-    ctx.fill();
-
-    ctx.fillStyle = "#f2df9b";
-    ctx.font = "700 15px sans-serif";
-    ctx.fillText("INSTITUCION", 265, 748);
-    ctx.fillText("CORREO INSTITUCIONAL", 600, 748);
-    ctx.fillText("FECHA DE EMISION", 920, 748);
-
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "21px sans-serif";
-    ctx.fillText(state.evaluationUserData.institution, 265, 781);
-    ctx.fillText(state.evaluationUserData.email, 600, 781);
-    const dateStr = new Date().toLocaleDateString("es-CO", { day: "numeric", month: "long", year: "numeric" });
-    ctx.fillText(dateStr, 920, 781);
-
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "italic 18px serif";
-    ctx.fillText("_________________________", 310, 874);
-    ctx.fillText("_________________________", 888, 874);
-    ctx.font = "bold 16px sans-serif";
-    ctx.fillStyle = "#d9e9ff";
-    ctx.fillText("Direccion academica", 310, 902);
-    ctx.fillText("Coordinacion del curso", 888, 902);
-
-    ctx.strokeStyle = "#d9b75f";
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.arc(600, 875, 44, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.fillStyle = "#f2df9b";
-    ctx.font = "bold 12px sans-serif";
-    ctx.fillText("UPTC", 600, 871);
-    ctx.fillText("2026", 600, 888);
+    ctx.textAlign = "left";
+    ctx.fillStyle = "#111111";
+    ctx.font = "700 18px serif";
+    ctx.fillText("Fecha de Emision:", dateLabelX, dateY);
+    ctx.fillStyle = "#2f2f2f";
+    ctx.font = "20px serif";
+    ctx.fillText(dateStr, dateValueX, dateY);
     return canvas;
   }
 
@@ -699,6 +628,16 @@
     ctx.globalAlpha = 0.98;
     ctx.drawImage(image, x, y, width, height);
     ctx.restore();
+  }
+
+  function fitText(ctx, text, x, y, maxWidth, startSize, minSize, weight, family) {
+    let fontSize = startSize;
+    while (fontSize >= minSize) {
+      ctx.font = `${weight} ${fontSize}px ${family}`;
+      if (ctx.measureText(text).width <= maxWidth) break;
+      fontSize -= 1;
+    }
+    ctx.fillText(text, x, y);
   }
 
   function roundRect(ctx, x, y, width, height, radius) {
