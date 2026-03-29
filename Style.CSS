@@ -2307,9 +2307,89 @@ h3 {
   color: #132b33 !important;
 }
 
+.section-list,
+.section-list li,
+.home-highlight-card .section-list li,
+.content-section .section-list li,
+.academic-item .section-list li {
+  color: #2b3135 !important;
+}
+
+.section-list li::marker {
+  color: #b78616;
+}
+
 .profile-summary-name,
 .profile-dropdown-link,
 .top-nav-link,
 .profile-trigger {
   color: #ffffff !important;
+}
+
+/* ==================== AJUSTE FINAL DE CONTRASTE ==================== */
+.content-section,
+.feature-card,
+.academic-item,
+.metric-card,
+.results-container,
+.home-highlight-card,
+.comparison-card,
+.info-card,
+.quiz-question,
+.chart-card {
+  color: #1d2529 !important;
+}
+
+.content-section .section-text,
+.content-section p,
+.feature-card p,
+.feature-description,
+.feature-text,
+.academic-item p,
+.metric-label,
+.results-container .section-text,
+.results-container p,
+.home-highlight-card p,
+.comparison-card p,
+.info-card p,
+.video-description,
+.cat,
+.developer-institution,
+.developer-contact,
+.profile-summary-email,
+.profile-upload-help {
+  color: #334047 !important;
+}
+
+.content-section .section-list li,
+.content-section .list-styled li,
+.home-highlight-card .section-list li,
+.academic-item .section-list li,
+.results-container li {
+  color: #334047 !important;
+}
+
+.content-section .section-subtitle,
+.content-section h3,
+.feature-title,
+.results-title,
+.comparison-title,
+.info-card-title,
+.category-title,
+.academic-item h3,
+.home-highlight-card h3 {
+  color: #163e46 !important;
+}
+
+.section-kicker,
+.question-number,
+.metric-number,
+.profile-group-title,
+.form-label {
+  color: #a87406 !important;
+}
+
+.chart-container canvas,
+#resultsChart {
+  color: #1f2937 !important;
 }
