@@ -120,7 +120,7 @@
     <main class="main-content">
       <div class="welcome-section">
         <h2 class="welcome-title">Bienvenido(a), <span id="userName"></span></h2>
-        <p style="font-size: 18px; color: #bfdbfe;">Explora contenidos, herramientas y estrategias de inteligencia artificial para educacion.</p>
+        <p style="font-size: 18px; color: z#bfdbfe;">Explora contenidos, herramientas y estrategias de inteligencia artificial para educacion.</p>
       </div>
 
       <section class="home-overview">
@@ -233,6 +233,19 @@
                 <span class="profile-card-label">Modalidad</span>
                 <strong>Autoformacion guiada</strong>
               </article>
+            </div>
+          </div>
+          <div class="profile-data-group">
+            <h3 class="profile-group-title">Certificado aprobado</h3>
+            <div id="profileCertificateSection" class="profile-card hidden">
+              <span class="profile-card-label">Estado del certificado</span>
+              <strong id="profileCertificateStatus">Aun no disponible</strong>
+              <p class="section-text" id="profileCertificateMessage">Cuando apruebes la evaluacion, aqui quedara guardado tu certificado para volver a abrirlo, descargarlo o enviarlo sin repetir la prueba.</p>
+              <div class="certificate-actions">
+                <button id="profilePreviewCertificateBtn" class="download-certificate-btn secondary-certificate-btn">Ver certificado</button>
+                <button id="profileDownloadCertificateBtn" class="download-certificate-btn">Descargar PDF</button>
+                <button id="profileEmailCertificateBtn" class="download-certificate-btn secondary-certificate-btn">Enviar al correo</button>
+              </div>
             </div>
           </div>
         </div>
@@ -623,6 +636,5 @@
 
 </body>
 </html>
-
 
 

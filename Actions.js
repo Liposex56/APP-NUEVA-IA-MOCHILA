@@ -109,6 +109,12 @@
     elements.profilePanelEmail = document.getElementById("profilePanelEmail");
     elements.profileImageInput = document.getElementById("profileImageInput");
     elements.profileUploadPreview = document.getElementById("profileUploadPreview");
+    elements.profileCertificateSection = document.getElementById("profileCertificateSection");
+    elements.profileCertificateStatus = document.getElementById("profileCertificateStatus");
+    elements.profileCertificateMessage = document.getElementById("profileCertificateMessage");
+    elements.profilePreviewCertificateBtn = document.getElementById("profilePreviewCertificateBtn");
+    elements.profileDownloadCertificateBtn = document.getElementById("profileDownloadCertificateBtn");
+    elements.profileEmailCertificateBtn = document.getElementById("profileEmailCertificateBtn");
     elements.dashboardNavLinks = document.querySelectorAll(".top-nav-link");
     elements.profileDropdownLinks = document.querySelectorAll(".profile-dropdown-link");
     elements.emailInput = document.getElementById("emailInput");
@@ -244,7 +250,19 @@
   }
 
   function bindCertificateEvents() {
-    elements.previewCertificateBtn?.addEventListener("click", async () => {
+    const ensureCertificateData = () => {
+      if (state.evaluationUserData.name && state.evaluationUserData.email && state.evaluationUserData.documentId) return true;
+      const record = getCurrentCertificateRecord();
+      if (!record) {
+        showAlert("Aun no tienes un certificado aprobado guardado en tu perfil.", "error");
+        return false;
+      }
+      state.evaluationUserData = { name: record.name, email: record.email, documentId: record.documentId };
+      return true;
+    };
+
+    const openPreview = async () => {
+      if (!ensureCertificateData()) return;
       try {
         const pdfUrl = await generateCertificatePdfUrl();
         if (elements.certificatePreviewFrame) elements.certificatePreviewFrame.src = pdfUrl;
@@ -252,22 +270,33 @@
       } catch (error) {
         showAlert(error.message || "No fue posible generar la vista previa del certificado.", "error");
       }
-    });
-    elements.downloadCertificateBtn?.addEventListener("click", async () => {
+    };
+
+    const downloadPdf = async () => {
+      if (!ensureCertificateData()) return;
       try {
         const pdf = await buildCertificatePdf();
         pdf.save(`Certificado_${state.evaluationUserData.name.replace(/\s+/g, "_")}.pdf`);
       } catch (error) {
         showAlert(error.message || "No fue posible descargar el certificado en PDF.", "error");
       }
-    });
-    elements.emailCertificateBtn?.addEventListener("click", async () => {
+    };
+
+    const emailPdf = async () => {
+      if (!ensureCertificateData()) return;
       try {
         await shareCertificateByEmail();
       } catch (error) {
         showAlert(error.message || "No fue posible preparar el envio del certificado.", "error");
       }
-    });
+    };
+
+    elements.previewCertificateBtn?.addEventListener("click", openPreview);
+    elements.profilePreviewCertificateBtn?.addEventListener("click", openPreview);
+    elements.downloadCertificateBtn?.addEventListener("click", downloadPdf);
+    elements.profileDownloadCertificateBtn?.addEventListener("click", downloadPdf);
+    elements.emailCertificateBtn?.addEventListener("click", emailPdf);
+    elements.profileEmailCertificateBtn?.addEventListener("click", emailPdf);
     elements.closeCertificatePreviewBtn?.addEventListener("click", closeCertificatePreview);
     elements.certificatePreviewModal?.addEventListener("click", (event) => {
       if (event.target === elements.certificatePreviewModal) closeCertificatePreview();
@@ -380,6 +409,7 @@
     setText(elements.profilePanelEmail, currentEmail);
     setText(document.getElementById("profilePanelInstitution"), "Universidad Pedagogica y Tecnologica de Colombia");
     renderProfileAvatar(loadStoredProfileImage(), initials);
+    updateProfileCertificateSection();
     if (!options.keepNavState) activateDashboardNav("inicio");
     if (!options.skipPersistence) persistAppLocation("dashboardView", options.showProfilePanel === true);
     closeProfileMenu();
@@ -388,6 +418,7 @@
     elements.views.forEach((view) => view.classList.remove("active"));
     document.getElementById(viewId)?.classList.add("active");
     setAppShellVisible(viewId !== "loginView");
+    if (viewId === "profileView") updateProfileCertificateSection();
     if (viewId !== "loginView") {
       activateDashboardNav(viewId === "dashboardView" ? "inicio" : viewId);
       persistAppLocation(viewId, false);
@@ -478,6 +509,14 @@
       if (percentage >= 80) {
         elements.resultMessage.innerHTML = `<strong style="color: #22c55e;">Excelente trabajo</strong><br>Has respondido correctamente ${correctCount} de ${totalQuestions} preguntas.<br>Has aprobado el curso de IA educativa.`;
         elements.certificateSection?.classList.remove("hidden");
+        void persistCertificateRecord({
+          name: state.evaluationUserData.name,
+          email: state.evaluationUserData.email,
+          documentId: state.evaluationUserData.documentId,
+          module: "Herramientas de Inteligencia Artificial para la Educacion",
+          percentage,
+          issuedAt: new Date().toISOString()
+        });
       } else {
         elements.resultMessage.innerHTML = `<strong style="color: #ef4444;">Necesitas mejorar</strong><br>Has respondido correctamente ${correctCount} de ${totalQuestions} preguntas.<br>Necesitas al menos 80% para aprobar.`;
         elements.certificateSection?.classList.add("hidden");
@@ -644,6 +683,50 @@
     ctx.closePath();
   }
 
+  function getCurrentCertificateRecord() {
+    return state.currentUser?.certificateRecord || null;
+  }
+
+  async function persistCertificateRecord(record) {
+    if (!state.currentUser) return;
+    state.currentUser.certificateRecord = record;
+    persistCurrentUser();
+    updateProfileCertificateSection();
+    try {
+      const { error } = await supabaseClient?.auth.updateUser({ data: { certificate_record: record } });
+      if (error) console.error(error);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  function formatCertificateDate(value) {
+    if (!value) return "";
+    const parsed = new Date(value);
+    if (Number.isNaN(parsed.getTime())) return "";
+    return parsed.toLocaleDateString("es-CO", { day: "numeric", month: "long", year: "numeric" });
+  }
+
+  function updateProfileCertificateSection() {
+    if (!elements.profileCertificateSection || !elements.profileCertificateStatus || !elements.profileCertificateMessage) return;
+    const record = getCurrentCertificateRecord();
+    elements.profileCertificateSection.classList.remove("hidden");
+    const actionButtons = [
+      elements.profilePreviewCertificateBtn,
+      elements.profileDownloadCertificateBtn,
+      elements.profileEmailCertificateBtn
+    ];
+    if (!record) {
+      setText(elements.profileCertificateStatus, "Aun no disponible");
+      setText(elements.profileCertificateMessage, "Cuando apruebes la evaluacion, aqui quedara guardado tu certificado para volver a abrirlo, descargarlo o enviarlo sin repetir la prueba.");
+      actionButtons.forEach((button) => button?.classList.add("hidden"));
+      return;
+    }
+    setText(elements.profileCertificateStatus, "Disponible para descarga");
+    setText(elements.profileCertificateMessage, `Aprobaste el modulo ${record.module} y tu certificado quedo guardado el ${formatCertificateDate(record.issuedAt)}. Puedes volver a abrirlo o descargarlo cuando quieras.`);
+    actionButtons.forEach((button) => button?.classList.remove("hidden"));
+  }
+
   async function syncSessionFromSupabase() {
     const { data, error } = await supabaseClient.auth.getSession();
     if (error) throw error;
@@ -661,7 +744,8 @@
     return {
       id: user.id,
       email: user.email || "",
-      name: user.user_metadata?.full_name || user.email?.split("@")[0] || "Usuario"
+      name: user.user_metadata?.full_name || user.email?.split("@")[0] || "Usuario",
+      certificateRecord: user.user_metadata?.certificate_record || null
     };
   }
 
