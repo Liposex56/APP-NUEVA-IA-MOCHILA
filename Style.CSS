@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@400;600;700;800&display=swap");
+﻿@import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@400;600;700;800&display=swap");
 
 :root {
   --uptc-paper: #f7f4ec;
@@ -48,7 +48,7 @@ h3 {
   display: none;
 }
 
-/* ==================== LOGIN ==================== */
+
 .login-container {
   min-height: 100vh;
   display: flex;
@@ -217,7 +217,7 @@ h3 {
   display: none !important;
 }
 
-/* ==================== HEADER ==================== */
+
 .header {
   background: rgba(9, 18, 36, 0.72);
   backdrop-filter: blur(14px);
@@ -426,7 +426,7 @@ h3 {
   color: #10213d;
 }
 
-/* ==================== DASHBOARD ==================== */
+
 .main-content {
   max-width: 1400px;
   margin: 0 auto;
@@ -659,7 +659,7 @@ h3 {
   font-size: 18px;
   line-height: 1.7;
 }
-/* ==================== SECCIÓN DESARROLLADORES ==================== */
+
 .developers-section {
   background:
     radial-gradient(circle at top center, rgba(251, 191, 36, 0.12), transparent 26%),
@@ -874,21 +874,21 @@ h3 {
 }
 
 
-/* Para agregar fotos/iconos específicos a cada botón, puedes usar clases adicionales o IDs */
-/* Ejemplo para el botón de NotebookLM */
+
+
 .visit-site-btn.notebooklm::before {
   content: '';
-  background-image: url('ruta/a/la/imagen/notebooklm.png'); /* Reemplaza con la ruta real */
+  background-image: url('ruta/a/la/imagen/notebooklm.png'); 
   background-size: cover;
   width: 24px;
   height: 24px;
   display: inline-block;
 }
 
-/* Ejemplo para el botón en el modal */
+
 .visit-site-btn.modal-btn::before {
   content: '';
-  background-image: url('ruta/a/la/imagen/modal.png'); /* Reemplaza con la ruta real */
+  background-image: url('ruta/a/la/imagen/modal.png'); 
   background-size: cover;
   width: 24px;
   height: 24px;
@@ -896,7 +896,7 @@ h3 {
 }
 
 
-/* ==================== CONTENIDO EDUCATIVO ==================== */
+
 .content-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -1143,7 +1143,7 @@ h3 {
 }
 
 .list-styled li::before {
-  content: "✓";
+  content: "âœ“";
   position: absolute;
   left: 0;
   color: #fbbf24;
@@ -1151,7 +1151,7 @@ h3 {
   font-size: 24px;
 }
 
-/* ==================== TABLA PERIÓDICA ==================== */
+
 .filters {
   display: flex;
   gap: 10px;
@@ -1269,7 +1269,7 @@ h3 {
   background: #3b82f6;
 }
 
-/* ==================== MODAL DE VIDEO ==================== */
+
 .video-modal {
   display: none;
   position: fixed;
@@ -1388,7 +1388,7 @@ h3 {
   box-shadow: 0 10px 25px rgba(217, 183, 95, 0.32);
 }
 
-/* ==================== EVALUACIÓN ==================== */
+
 .quiz-container {
   max-width: 900px;
   margin: 0 auto;
@@ -1493,7 +1493,7 @@ h3 {
   flex-shrink: 0;
 }
 
-/* Nuevos estilos para el botón único de verificación */
+
 .submit-quiz-btn,
 .reset-quiz-btn {
   background: linear-gradient(135deg, #fbbf24, #f59e0b);
@@ -1520,7 +1520,7 @@ h3 {
   color: white;
 }
 
-/* ==================== RESULTADOS ==================== */
+
 .results-container {
   background: rgba(152, 152, 152, 0.249);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -1705,7 +1705,7 @@ canvas {
     font-size: 48px;
   }
 }
-/* ==================== NOTEBOOKLM ==================== */
+
 .info-card {
   background: rgba(152, 152, 152, 0.249);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -1932,7 +1932,7 @@ canvas {
 }
 
 .pros-card li::before {
-  content: "✓";
+  content: "âœ“";
   position: absolute;
   left: 0;
   color: #22c55e;
@@ -1941,7 +1941,7 @@ canvas {
 }
 
 .cons-card li::before {
-  content: "⚠";
+  content: "âš ";
   position: absolute;
   left: 0;
   color: #ef4444;
@@ -1949,25 +1949,25 @@ canvas {
 
 }
 @media (min-width: 320px) {
-  /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
+  
 }
 @media (min-width: 480px) {
-  /* smartphones, Android phones, landscape iPhone */
+  
 }
 @media (min-width: 600px) {
-  /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
+  
 }
 @media (min-width: 801px) {
-  /* tablet, landscape iPad, lo-res laptops ands desktops */
+  
 }
 @media (min-width: 1025px) {
-  /* big landscape tablets, laptops, and desktops */
+  
 }
 @media (min-width: 1281px) {
-  /* hi-res laptops and desktops */
+  
 }
 
-/* ==================== REDISENO UPTC ==================== */
+
 body {
   font-family: "Source Sans 3", sans-serif;
   background:
@@ -2193,7 +2193,12 @@ h3 {
 .footer-brand p,
 .footer-brand-text,
 .footer-bottom p {
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(255, 255, 255, 0.98);
+}
+
+.footer-brand-text,
+.footer-bottom p {
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.18);
 }
 
 .footer-logo-card {
@@ -2248,7 +2253,7 @@ h3 {
   }
 }
 
-/* ==================== AJUSTES DE CONTRASTE ==================== */
+
 .section-text,
 .welcome-copy,
 .unit-description,
@@ -2326,7 +2331,7 @@ h3 {
   color: #ffffff !important;
 }
 
-/* ==================== AJUSTE FINAL DE CONTRASTE ==================== */
+
 .content-section,
 .feature-card,
 .academic-item,
@@ -2393,3 +2398,4 @@ h3 {
 #resultsChart {
   color: #1f2937 !important;
 }
+
