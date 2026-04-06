@@ -532,32 +532,27 @@
 
     const dateStr = new Date().toLocaleDateString("es-CO", { day: "numeric", month: "long", year: "numeric" });
 
-    const paperColor = "#ffffff";
     const nameX = 528;
-    const nameY = 472;
-    const documentX = 528;
-    const documentY = 579;
-    const dateX = 600;
+    const nameY = 486;
+    const documentX = 506;
+    const documentY = 554;
+    const dateX = 478;
     const dateY = 744;
-
-    ctx.fillStyle = paperColor;
-    ctx.fillRect(246, 438, 564, 42);
-    ctx.fillRect(438, 564, 180, 18);
-    ctx.fillRect(534, 730, 140, 18);
 
     ctx.textAlign = "center";
     ctx.fillStyle = "#111111";
     ctx.font = "700 42px serif";
     fitText(ctx, state.evaluationUserData.name.toUpperCase(), nameX, nameY, 610, 42, 30, "700", "serif");
 
+    ctx.textAlign = "left";
     ctx.fillStyle = "#2c6d73";
-    ctx.font = "700 16px serif";
-    fitText(ctx, state.evaluationUserData.documentId || "Sin documento", documentX, documentY, 180, 15, 12, "700", "serif");
+    ctx.font = "700 14px serif";
+    fitText(ctx, state.evaluationUserData.documentId || "Sin documento", documentX, documentY, 150, 14, 11, "700", "serif");
 
-    ctx.textAlign = "center";
+    ctx.textAlign = "left";
     ctx.fillStyle = "#2f2f2f";
-    ctx.font = "15px serif";
-    fitText(ctx, dateStr, dateX, dateY, 150, 15, 12, "400", "serif");
+    ctx.font = "14px serif";
+    fitText(ctx, dateStr, dateX, dateY, 180, 14, 11, "400", "serif");
     return canvas;
   }
 
