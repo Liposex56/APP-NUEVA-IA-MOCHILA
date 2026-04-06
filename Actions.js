@@ -536,8 +536,8 @@
     const nameY = 486;
     const documentX = 506;
     const documentY = 554;
-    const dateX = 478;
-    const dateY = 744;
+    const dateX = 540;
+    const dateY = 752;
 
     ctx.textAlign = "center";
     ctx.fillStyle = "#111111";
@@ -546,8 +546,8 @@
 
     ctx.textAlign = "left";
     ctx.fillStyle = "#2c6d73";
-    ctx.font = "700 14px serif";
-    fitText(ctx, state.evaluationUserData.documentId || "Sin documento", documentX, documentY, 150, 14, 11, "700", "serif");
+    ctx.font = "700 16px serif";
+    fitText(ctx, state.evaluationUserData.documentId || "Sin documento", documentX, documentY, 175, 16, 12, "700", "serif");
 
     ctx.textAlign = "left";
     ctx.fillStyle = "#2f2f2f";
