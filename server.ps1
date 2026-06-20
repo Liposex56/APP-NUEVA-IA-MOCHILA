@@ -69,6 +69,7 @@ function Send-Response($stream, [int]$statusCode, [string]$statusText, [byte[]]$
   $writer.WriteLine("HTTP/1.1 $statusCode $statusText")
   $writer.WriteLine("Content-Type: $contentType")
   $writer.WriteLine("Content-Length: $($body.Length)")
+  $writer.WriteLine("Cache-Control: no-store")
   $writer.WriteLine("Connection: close")
   $writer.WriteLine()
   $writer.Flush()
@@ -96,7 +97,7 @@ function Handle-Register($stream, [string]$bodyText) {
   try {
     $body = $bodyText | ConvertFrom-Json
   } catch {
-    Send-Json $stream 400 "Bad Request" @{ error = "Solicitud invalida." }
+    Send-Json $stream 400 "Bad Request" @{ error = "Solicitud inválida." }
     return
   }
 
@@ -110,13 +111,13 @@ function Handle-Register($stream, [string]$bodyText) {
   }
 
   if ($password.Length -lt 6) {
-    Send-Json $stream 400 "Bad Request" @{ error = "La contrasena debe tener al menos 6 caracteres." }
+    Send-Json $stream 400 "Bad Request" @{ error = "La contraseña debe tener al menos 6 caracteres." }
     return
   }
 
   $users = Read-Users
   if ($users | Where-Object { $_.email -eq $email }) {
-    Send-Json $stream 409 "Conflict" @{ error = "Este correo ya esta registrado." }
+    Send-Json $stream 409 "Conflict" @{ error = "Este correo ya está registrado." }
     return
   }
 
@@ -145,7 +146,7 @@ function Handle-Login($stream, [string]$bodyText) {
   try {
     $body = $bodyText | ConvertFrom-Json
   } catch {
-    Send-Json $stream 400 "Bad Request" @{ error = "Solicitud invalida." }
+    Send-Json $stream 400 "Bad Request" @{ error = "Solicitud inválida." }
     return
   }
 
@@ -155,12 +156,12 @@ function Handle-Login($stream, [string]$bodyText) {
   $user = $users | Where-Object { $_.email -eq $email } | Select-Object -First 1
 
   if (-not $user) {
-    Send-Json $stream 401 "Unauthorized" @{ error = "Correo o contrasena incorrectos." }
+    Send-Json $stream 401 "Unauthorized" @{ error = "Correo o contraseña incorrectos." }
     return
   }
 
   if ((Get-PasswordHash $password $user.passwordSalt) -ne $user.passwordHash) {
-    Send-Json $stream 401 "Unauthorized" @{ error = "Correo o contrasena incorrectos." }
+    Send-Json $stream 401 "Unauthorized" @{ error = "Correo o contraseña incorrectos." }
     return
   }
 

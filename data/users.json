@@ -1,0 +1,18 @@
+﻿[
+    {
+        "id":  "40d8eba3-6a47-40f6-ab33-2fd19ca1fe1a",
+        "name":  "Prueba Usuario",
+        "email":  "prueba.codex@example.com",
+        "passwordSalt":  "FET/DSjzBujArxl0iBt4cw==",
+        "passwordHash":  "5bTfdH5LGivn76P8GzFl1L8EeMzKf9FhqqsaL9x23oI=",
+        "createdAt":  "2026-03-18T01:16:52.0685707Z"
+    },
+    {
+        "id":  "f5ab642a-56d9-4b6f-b5a0-6fa081cf657a",
+        "name":  "SI",
+        "email":  "gomez@gmail.com",
+        "passwordSalt":  "25Rvxp2evkIdE6Apyu4OuA==",
+        "passwordHash":  "Da8uQhQZy5AUN91eG6nmJ46PbEKb/f7Ri4dn5XPnIEo=",
+        "createdAt":  "2026-03-18T01:25:11.3883290Z"
+    }
+]
