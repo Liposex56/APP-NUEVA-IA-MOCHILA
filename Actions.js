@@ -111,7 +111,9 @@
     elements.profileSummaryEmail = document.getElementById("profileSummaryEmail");
     elements.profilePanel = document.getElementById("profilePanel");
     elements.profilePanelAvatar = document.getElementById("profilePanelAvatar");
-    elements.profilePanelName = document.getElementById("profilePanelName");
+    elements.profileNameInput = document.getElementById("profileNameInput");
+    elements.saveProfileNameBtn = document.getElementById("saveProfileNameBtn");
+    elements.profileNameStatus = document.getElementById("profileNameStatus");
     elements.profilePanelEmail = document.getElementById("profilePanelEmail");
     elements.profileImageInput = document.getElementById("profileImageInput");
     elements.profileUploadPreview = document.getElementById("profileUploadPreview");
@@ -219,6 +221,12 @@
       if (event.key === "Escape") closeProfileMenu();
     });
     elements.profileImageInput?.addEventListener("change", handleProfileImageChange);
+    elements.saveProfileNameBtn?.addEventListener("click", saveProfileName);
+    elements.profileNameInput?.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter") return;
+      event.preventDefault();
+      void saveProfileName();
+    });
   }
 
   function bindCatalogEvents() {
@@ -404,10 +412,8 @@
       clearAlert();
     }
   }
-  function showDashboard(options = {}) {
-    elements.views.forEach((view) => view.classList.remove("active"));
-    elements.dashboardView?.classList.add("active");
-    setAppShellVisible(true);
+
+  function renderCurrentUserProfile() {
     const currentName = state.currentUser?.name || "Invitado";
     const currentEmail = state.currentUser?.email || "correo@institucion.edu.co";
     const initials = getUserInitials(currentName);
@@ -417,11 +423,18 @@
     setText(elements.profileSummaryName, currentName);
     setText(elements.profileSummaryEmail, currentEmail);
     setText(elements.profilePanelAvatar, initials);
-    setText(elements.profilePanelName, currentName);
+    if (elements.profileNameInput) elements.profileNameInput.value = currentName;
     setText(elements.profilePanelEmail, currentEmail);
     setText(document.getElementById("profilePanelInstitution"), "Universidad Pedagógica y Tecnológica de Colombia");
     renderProfileAvatar(loadStoredProfileImage(), initials);
     updateProfileCertificateSection();
+  }
+
+  function showDashboard(options = {}) {
+    elements.views.forEach((view) => view.classList.remove("active"));
+    elements.dashboardView?.classList.add("active");
+    setAppShellVisible(true);
+    renderCurrentUserProfile();
     if (!options.keepNavState) activateDashboardNav("inicio");
     if (!options.skipPersistence) persistAppLocation("dashboardView", options.showProfilePanel === true);
     closeProfileMenu();
@@ -430,7 +443,7 @@
     elements.views.forEach((view) => view.classList.remove("active"));
     document.getElementById(viewId)?.classList.add("active");
     setAppShellVisible(viewId !== "loginView");
-    if (viewId === "profileView") updateProfileCertificateSection();
+    if (viewId === "profileView") renderCurrentUserProfile();
     if (viewId !== "loginView") {
       activateDashboardNav(viewId === "dashboardView" ? "inicio" : viewId);
       persistAppLocation(viewId, false);
@@ -438,6 +451,60 @@
     }
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
+
+  async function saveProfileName() {
+    if (!state.currentUser || !elements.profileNameInput) return;
+    const nextName = elements.profileNameInput.value.trim().replace(/\s+/g, " ");
+    if (nextName.split(" ").length < 2) {
+      setProfileNameStatus("Escribe al menos un nombre y un apellido.", "error");
+      return;
+    }
+    if (nextName.length > 100) {
+      setProfileNameStatus("El nombre no puede superar los 100 caracteres.", "error");
+      return;
+    }
+
+    const currentRecord = getCurrentCertificateRecord();
+    const updatedRecord = currentRecord ? { ...currentRecord, name: nextName } : null;
+    const metadata = { full_name: nextName };
+    if (updatedRecord) metadata.certificate_record = updatedRecord;
+
+    elements.saveProfileNameBtn?.setAttribute("aria-busy", "true");
+    if (elements.saveProfileNameBtn) elements.saveProfileNameBtn.disabled = true;
+    setProfileNameStatus("Guardando...", "pending");
+
+    try {
+      if (supabaseClient) {
+        const { data: sessionData, error: sessionError } = await supabaseClient.auth.getSession();
+        if (sessionError) throw sessionError;
+        if (sessionData.session) {
+          const { error } = await supabaseClient.auth.updateUser({ data: metadata });
+          if (error) throw error;
+        }
+      }
+
+      state.currentUser.name = nextName;
+      if (updatedRecord) state.currentUser.certificateRecord = updatedRecord;
+      if (state.evaluationUserData.name) state.evaluationUserData.name = nextName;
+      persistCurrentUser();
+      renderCurrentUserProfile();
+      setText(elements.userNameHeaderResults, state.evaluationUserData.name ? `Evaluado: ${nextName}` : "");
+      setProfileNameStatus("Nombre actualizado correctamente.", "success");
+    } catch (error) {
+      console.error(error);
+      setProfileNameStatus(error.message || "No fue posible actualizar el nombre.", "error");
+    } finally {
+      elements.saveProfileNameBtn?.removeAttribute("aria-busy");
+      if (elements.saveProfileNameBtn) elements.saveProfileNameBtn.disabled = false;
+    }
+  }
+
+  function setProfileNameStatus(message, type) {
+    if (!elements.profileNameStatus) return;
+    elements.profileNameStatus.textContent = message;
+    elements.profileNameStatus.className = `profile-name-status ${type || ""}`.trim();
+  }
+
   function showAlert(message, type) {
     if (elements.loginView?.classList.contains("active") && elements.alertContainer) {
       elements.alertContainer.innerHTML = `<div class="alert alert-${type}">${message}</div>`;

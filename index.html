@@ -33,11 +33,11 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 
-    <link rel="stylesheet" href="Style.CSS?v=20260620-logos"/>
+    <link rel="stylesheet" href="Style.CSS?v=20260622-editable-profile-name"/>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="certificate-assets.js?v=20260620-file-canvas-fix"></script>
-    <script src="Actions.js?v=20260622-genially-videos" defer></script>
+    <script src="Actions.js?v=20260622-editable-profile-name" defer></script>
 </head>
 <body>
   
@@ -224,8 +224,15 @@
             <h3 class="profile-group-title">Información del participante</h3>
             <div class="profile-panel-grid profile-panel-grid-wide">
               <article class="profile-card">
-                <span class="profile-card-label">Nombre completo</span>
-                <strong id="profilePanelName">Usuario</strong>
+                <label class="profile-card-label" for="profileNameInput">Nombre completo para el certificado</label>
+                <div class="profile-name-edit-row">
+                  <input type="text" id="profileNameInput" class="profile-name-input" autocomplete="name" placeholder="Nombre y apellidos">
+                  <button type="button" id="saveProfileNameBtn" class="profile-name-save-btn">
+                    <span class="material-symbols-outlined" aria-hidden="true">save</span>
+                    Guardar
+                  </button>
+                </div>
+                <p id="profileNameStatus" class="profile-name-status" aria-live="polite"></p>
               </article>
               <article class="profile-card">
                 <span class="profile-card-label">Correo institucional</span>

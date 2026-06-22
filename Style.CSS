@@ -2511,3 +2511,84 @@ h3 {
   }
 }
 
+.profile-name-edit-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.profile-name-input {
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  padding: 10px 12px;
+  color: #171717;
+  background: #ffffff;
+  border: 1px solid rgba(44, 109, 115, 0.28);
+  border-radius: 6px;
+  font: inherit;
+  font-size: 16px;
+}
+
+.profile-name-input:focus-visible,
+.profile-name-save-btn:focus-visible {
+  outline: 3px solid rgba(211, 163, 38, 0.5);
+  outline-offset: 2px;
+}
+
+.profile-name-save-btn {
+  height: 44px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: #ffffff;
+  background: #1d5c63;
+  border: none;
+  border-radius: 6px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.profile-name-save-btn .material-symbols-outlined {
+  font-size: 20px;
+}
+
+.profile-name-save-btn:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.profile-name-status {
+  min-height: 22px;
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.profile-name-status.success {
+  color: #19703a;
+}
+
+.profile-name-status.error {
+  color: #a32626;
+}
+
+.profile-name-status.pending {
+  color: #5e666b;
+}
+
+@media (max-width: 520px) {
+  .profile-name-edit-row {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-name-save-btn {
+    width: 100%;
+  }
+}
+
