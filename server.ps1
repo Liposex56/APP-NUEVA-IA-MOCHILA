@@ -54,6 +54,8 @@ function Get-ContentType([string]$filePath) {
     ".css" { return "text/css; charset=utf-8" }
     ".js" { return "application/javascript; charset=utf-8" }
     ".json" { return "application/json; charset=utf-8" }
+    ".txt" { return "text/plain; charset=utf-8" }
+    ".xml" { return "application/xml; charset=utf-8" }
     ".png" { return "image/png" }
     ".jpg" { return "image/jpeg" }
     ".jpeg" { return "image/jpeg" }
