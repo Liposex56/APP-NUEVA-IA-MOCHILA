@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://app-nueva-ia-mochila.vercel.app/sitemap.xml
